@@ -20,10 +20,10 @@ command to install all dependencies:
 npm install
 ```
 
-4. Finally in order to run the application execute the following command:
+4. Finally, in order to run the application, execute the following command:
 ```
 npx expo start
 ```
 
-5. Follow the directions in the terminal in order to get the project setup and working on your
-mobile device.
+5. Follow the directions in your terminal to get the project setup and working on your
+mobile device with Expo.
