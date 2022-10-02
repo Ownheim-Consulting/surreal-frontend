@@ -9,10 +9,16 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.4.0",
+    "@react-navigation/native": "^6.0.13",
     "expo": "~46.0.13",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",
-    "react-native": "0.69.6"
+    "react-native": "0.69.6",
+    "react-native-collapsible": "^1.6.0",
+    "react-native-reanimated": "~2.9.1",
+    "reanimated-collapsible": "^1.0.0",
+    "reanimated-collapsible-helpers": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
