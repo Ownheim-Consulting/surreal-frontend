@@ -7,15 +7,13 @@ import colors from "../config/colors";
 function Card({ title, subTitle, image }) {
   return (
     <View style={styles.card}>
+      <AppText style={styles.title} numberOfLines={1}>
+        {title}
+      </AppText>
+      <AppText style={styles.subTitle} numberOfLines={1}>
+        {subTitle}
+      </AppText>
       <Image style={styles.image} source={image} />
-      <View style={styles.detailsContainer}>
-        <AppText style={styles.title} numberOfLines={1}>
-          {title}
-        </AppText>
-        <AppText style={styles.subTitle} numberOfLines={2}>
-          {subTitle}
-        </AppText>
-      </View>
     </View>
   );
 }
@@ -32,14 +30,17 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 200,
+    height: 600,
+    padding: 15
   },
   subTitle: {
     color: colors.secondary,
     fontWeight: "bold",
+    align: "center",
   },
   title: {
     marginBottom: 7,
+    align: "center",
   },
 });
 

@@ -11,23 +11,27 @@ import graphsApi from '../apis/graphsApi';
 
 
 function GraphScreen(props) {
-    const getGraphsApi = useApi(graphsApi.getGraphs);
+    // Need to process list of graphs to get
+    // This list can be kept in local memory
+    // let graphsToGet = props.graphsToGet;
+    // const getGraphsApi = useApi(graphsApi.getGraphs(graphsToGet));
 
-    useEffect(() => {
-        getGraphsApi.request();
-    }, []);
+    // useEffect(() => {
+    //     getGraphsApi.request();
+    // }, []);
 
     return (
         <Screen style={styles.screen}>
             <FlatList
                 showVerticalScrollIndicator={false}
-                data={getGraphsApi.data}
+                // data={getGraphsApi.data}
                 keyExtractor={(listing) => listing.id.toString()}
                 renderItem={({ graph }) => (
                     <Card
                         title={graph.title}
-                        imageUrl={graph.images[0].url}
-                        onPress={() => navigation.navigate(routes.GRAPH_DETAILS_SCREEN, graph)}
+                        subTitle={graph.subTitle}
+                        image={graph.image}
+                        onPress={() => return} // TODO (Greg Heiman): Implement zooming and touching on counties
                     />
                 )}
             />
