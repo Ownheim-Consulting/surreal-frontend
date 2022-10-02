@@ -1,9 +1,9 @@
 import React from "react";
 import { FlatList, StyleSheet, ImageBackground } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import Screen from "../components/Screen";
 import InfoCard from "../components/InfoCard";
 import colors from "../config/colors";
+import listings from "../config/listing";
 
 function ListingsScreen() {
   return (

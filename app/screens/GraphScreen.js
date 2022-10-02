@@ -10,7 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Screen from "../components/Screen";
 import Card from "../components/Card";
 import colors from "../config/colors";
-import listings from "../config/listing";
+import graphs from "../config/graph";
 
 function GraphScreen() {
   return (
@@ -23,13 +23,13 @@ function GraphScreen() {
         <TouchableWithoutFeedback>
           <FlatList
             //showVerticalScrollIndicator={false}
-            data={listings}
-            keyExtractor={(listing) => listing.id.toString()}
+            data={graphs}
+            keyExtractor={(graph) => graph.id.toString()}
             renderItem={({ item }) => (
               <Card
                 title={item.title}
                 subTitle={item.details}
-                image={item.image}
+                image={item.image.toString()}
               />
             )}
           />

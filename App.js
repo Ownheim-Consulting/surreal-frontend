@@ -3,8 +3,6 @@ import { StyleSheet, Text, View } from "react-native";
 import NaviagtionTabs from "./app/components/NavigationTabs";
 import Screen from "./app/components/Screen";
 import colors from "./app/config/colors";
-import GraphScreen from "./app/screens/GraphScreen";
-import ListingsScreen from "./app/screens/ListingsScreen";
 
 export default function App() {
   return (

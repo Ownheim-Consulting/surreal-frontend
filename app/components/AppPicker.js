@@ -13,6 +13,7 @@ import AppText from "./AppText";
 import Screen from "./Screen";
 import defaultStyles from "../config/styles";
 import PickerItem from "./PickerItem";
+import colors from "../config/colors";
 
 function AppPicker({
   icon,
@@ -73,7 +74,7 @@ function AppPicker({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: defaultStyles.colors.light,
+    backgroundColor: defaultStyles.colors.primary,
     borderRadius: 25,
     flexDirection: "row",
     padding: 15,
@@ -83,11 +84,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   placeholder: {
-    color: defaultStyles.colors.medium,
+    color: defaultStyles.colors.light,
     flex: 1,
   },
   text: {
     flex: 1,
+    backgroundColor: colors.danger,
   },
 });
 
