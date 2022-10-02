@@ -1,49 +1,43 @@
 import React from "react";
-import { FlatList, StyleSheet } from "react-native";
-
+import { FlatList, StyleSheet, ImageBackground } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import Screen from "../components/Screen";
 import InfoCard from "../components/InfoCard";
 import colors from "../config/colors";
 
-const listings = [
-  {
-    id: 1,
-    title: "Precipitation",
-    details: "This is stuff about stuff lol",
-    fetchdata: "Stuf",
-  },
-  {
-    id: 2,
-    title: "Average Pay",
-    price: 1000,
-    image: require("../assets/couch.jpg"),
-  },
-  {
-    id: 3,
-    title: "Poverty",
-    price: 1000,
-    image: require("../assets/couch.jpg"),
-  },
-];
-
 function ListingsScreen() {
   return (
     <Screen style={styles.screen}>
-      <FlatList
-        data={listings}
-        keyExtractor={(listing) => listing.id.toString()}
-        renderItem={({ item }) => (
-          <InfoCard name={item.title} placeholder={item.title} width={"100%"} />
-        )}
-      />
+      <ImageBackground
+        styles={styles.background}
+        source={require("../assets/background.png")}
+        style={styles.image}
+      >
+        <FlatList
+          data={listings}
+          keyExtractor={(listing) => listing.id.toString()}
+          renderItem={({ item }) => (
+            <InfoCard
+              name={item.title}
+              description={item.details}
+              placeholder={item.title}
+              width={"100%"}
+            />
+          )}
+        />
+      </ImageBackground>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 10,
     backgroundColor: colors.primary,
+  },
+  image: {
+    backgroundColor: "transparent",
+    flex: 1,
+    justifyContent: "flex-end",
   },
 });
 

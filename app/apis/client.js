@@ -1,7 +1,18 @@
-import { create } from 'apisauce';
+import { create } from "apisauce";
 
-const client = create({
-    baseUrl: "http://localhost:8080/api"
+const apiClient = create({
+  baseURL: "https://space-app-364302.uc.r.appspot.com",
 });
 
-export default client;
+const get = apiClient.get;
+apiClient.get = async (url) => {
+  const response = await get(url);
+
+  if (response.ok) {
+    return response;
+  }
+
+  console.log(response);
+};
+
+export default apiClient;

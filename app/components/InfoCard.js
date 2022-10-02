@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import {
   useCollapsible,
   AnimatedSection,
@@ -8,6 +8,7 @@ import {
 
 import AppText from "./AppText";
 import defaultStyles from "../config/styles";
+import colors from "../config/colors";
 
 function InfoCard({
   icon,
@@ -17,9 +18,29 @@ function InfoCard({
   width = "100%",
 }) {
   const { animatedHeight, height, onPress, onLayout, state } = useCollapsible();
+  const [colorButton, setColor] = useState(colors.light);
+  const [isPressed, setPress] = useState(true);
 
+  graphs = [];
+
+  function onPressPlus() {
+    graphs = graphs.concat(placeholder);
+    console.log(graphs);
+  }
+
+  function chooseColor() {
+    setColor(
+      isPressed === true ? colors.danger.toString() : colors.light.toString()
+    );
+  }
+
+  function combine() {
+    onPressPlus();
+    chooseColor();
+    setPress(isPressed === true ? false : true);
+  }
   return (
-    <View style={styles.mainContainer}>
+    <View style={[styles.mainContainer, { backgroundColor: colorButton }]}>
       <TouchableWithoutFeedback onPress={onPress}>
         <View style={[styles.container, { width: width }]}>
           {icon && (
@@ -51,11 +72,13 @@ function InfoCard({
       >
         <View style={[styles.textContainer]}>
           <AppText style={styles.text}>{description}</AppText>
-          <MaterialCommunityIcons
-            name="plus"
-            size={30}
-            color={defaultStyles.colors.secondary}
-          />
+          <TouchableWithoutFeedback onPress={() => combine()}>
+            <MaterialCommunityIcons
+              name="plus-circle"
+              size={30}
+              color={defaultStyles.colors.secondary}
+            />
+          </TouchableWithoutFeedback>
         </View>
       </AnimatedSection>
     </View>
@@ -64,7 +87,7 @@ function InfoCard({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: defaultStyles.colors.light,
+    backgroundColor: "transparent",
     borderTopEndRadius: 40,
     borderTopStartRadius: 40,
     borderBottomEndRadius: 40,
@@ -85,12 +108,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textContainer: {
-    padding: 10,
+    padding: 25,
     borderBottomEndRadius: 40,
     borderBottomStartRadius: 40,
     width: "100%",
     alignSelf: "center",
     flexDirection: "row",
+    alignItems: "center",
   },
   animate: {
     easing: 10000,

@@ -5,14 +5,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ListingsScreen from "../screens/ListingsScreen";
 import colors from "../config/colors";
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+import GraphScreen from "../screens/GraphScreen";
+import HomeScreen from "../screens/HomeScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,8 +28,21 @@ export default function NaviagtionTabs() {
           }}
         />
         <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarIcon: (tabInfo) => (
+              <MaterialCommunityIcons
+                name="home"
+                size={30}
+                color={tabInfo.color}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
           name="Graphs"
-          component={SettingsScreen}
+          component={GraphScreen}
           options={{
             tabBarIcon: (tabInfo) => (
               <MaterialCommunityIcons
@@ -51,16 +58,10 @@ export default function NaviagtionTabs() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    activeTintColor: colors.danger,
-  },
-});
-
 const myTheme = {
   colors: {
     primary: colors.danger,
-    background: colors.light,
+    background: colors.dark_blue,
     text: colors.light,
     border: colors.dark_blue,
     notification: colors.danger,
