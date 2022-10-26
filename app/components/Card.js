@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, ScrollView } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import InsetShadow from "react-native-inset-shadow";
 import AppText from "./AppText";
 import colors from "../config/colors";
 import AppPicker from "../components/AppPicker";
-import counties from "../config/counties";
+import Graph from "../components/Graph";
 
-function Card({ title, subTitle, image, avg, corr }) {
-  const [selected, setSelectedItem] = useState();
-
-  function selectedItem() {}
+function Card({ title, subTitle, graph, avg, corr }) {
   return (
     <View style={styles.card}>
       <AppText style={styles.title} numberOfLines={1}>
@@ -19,11 +16,7 @@ function Card({ title, subTitle, image, avg, corr }) {
         {subTitle}
       </AppText>
       <View style={styles.imageView}>
-        <InsetShadow style={styles.shadow}>
-          <ScrollView minimumZoomScale={1} maximumZoomScale={5}>
-            <Image style={styles.image} source={image} />
-          </ScrollView>
-        </InsetShadow>
+        <InsetShadow>{graph}</InsetShadow>
       </View>
       <View>
         <AppPicker
@@ -48,15 +41,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     overflow: "hidden",
     padding: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    height: "80%",
   },
   detailsContainer: {
     padding: 20,
-  },
-  image: {
-    width: "100%",
-    height: 250,
-    resizeMode: "Center",
-    flex: 1,
   },
   subTitle: {
     color: colors.secondary,
@@ -71,8 +61,11 @@ const styles = StyleSheet.create({
   imageView: {
     borderRadius: 10,
     overflow: "hidden",
-    padding: 10,
-    height: 250,
+    // padding: 10,
+    //height: 250,
+    flex: 1,
+    width: "100%",
+    height: "80%",
   },
   shadow: {},
 });

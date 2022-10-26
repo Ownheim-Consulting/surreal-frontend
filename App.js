@@ -17,7 +17,3 @@ const styles = StyleSheet.create({
     backgroundColor: colors.dark_blue,
   },
 });
-
-//<Screen style={styles.screen}>
-//  <NaviagtionTabs />
-//</Screen>
