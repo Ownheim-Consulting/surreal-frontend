@@ -1,7 +1,18 @@
-# NASA Space Apps 2022 Frontend
-## Team: Space Jam
-## Challenge: Take Flight: Making the Most of NASA’s Airborne Data
-Frontend code for NASA Space Apps 2022.
+# Surreal Frontend
+Frontend code for the NASA Space Apps 2022 competition. Created by Space Jam.
+
+Space Jam consists of the following members (listed in alphabetical order):
+
+- Akim Niyo
+- Dimitri Senevitratne
+- Fernando Rubio Garcia
+- Grant Johnson
+- Greg Heiman
+- Murphy Ownbey
+
+The challenge: Take Flight: Making the Most of NASA’s Airborne Data
+
+Surreal combines NASA airbourne data with Census Bureau economic data to provide dynamic visualizations in an easy to use mobile interface (housed in a different repository).
 
 # Dependencies
 - NodeJS
