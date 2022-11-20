@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "NASASpaceApps2022",
-    "slug": "NASASpaceApps2022",
-    "version": "1.0.0",
+    "name": "Surreal",
+    "slug": "Surreal",
+    "version": "0.3.0",
     "privacy": "unlisted",
     "orientation": "portrait",
     "icon": "./app/assets/surreal2.png",
