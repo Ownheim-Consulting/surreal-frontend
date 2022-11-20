@@ -4,14 +4,15 @@ import { View, StyleSheet } from "react-native";
 import * as d3 from "d3";
 import Plotly from "react-native-plotly";
 
-function ChoroplethMap(obj) {
-    const [choroplethMap, setChoroplethMap] = useState();
+function ChoroplethMap(choroplethMapModel) {
+    const [chart, setChart] = useState();
 
     useEffect(() => {
         async function processChart() {
-            let geoData = obj.geo_data_uri;
-            let zData = obj.z_data_uri;
+            let geoData = choroplethMapModel.geoDataUri;
+            let zData = choroplethMapModel.zDataUri;
 
+            console.log(geoData);
             d3.csv(zData)
                 .then(function (rows) {
                     function unpack(rows, key) {
@@ -57,7 +58,7 @@ function ChoroplethMap(obj) {
                         responsive: false,
                     };
 
-                    setChoroplethMap(
+                    setChart(
                         <Plotly
                             data={data}
                             layout={layout}
@@ -70,13 +71,13 @@ function ChoroplethMap(obj) {
                 .catch((error) => console.error(error));
         }
 
-        // Handle initial load of componenet when graph is undefined
-        if (!choroplethMap) {
+        // Handle initial load of component when chart is undefined
+        if (!chart) {
             processChart();
         }
-    }, [choroplethMap]);
+    }, [chart]);
 
-    return <View style={styles.chartRow}>{choroplethMap}</View>;
+    return <View style={styles.chartRow}>{chart}</View>;
 }
 
 const styles = StyleSheet.create({

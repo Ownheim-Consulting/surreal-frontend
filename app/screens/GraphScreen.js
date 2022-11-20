@@ -9,17 +9,17 @@ import {
 import Screen from "../components/Screen";
 import Card from "../components/Card";
 import colors from "../config/colors";
-import Graph from "../components/Graph";
-import ChoroplethMap from "../components/ChoroplethMap";
-import ChartApi from "../apis/chartApi";
+import Chart from "../components/Chart";
+import ChartApi from "../apis/ChartApi";
+import ChoroplethMapModel from "../models/ChoroplethMapModel";
 
 function GraphScreen({ chartIds }) {
     const [charts, setCharts] = useState([]);
 
-    function mapChartResponseTypeToType(type) {
-        switch (type) {
+    function mapChartResponseToModel(response) {
+        switch (response.data.type) {
             case "choropleth_map":
-                return ChoroplethMap;
+                return ChoroplethMapModel.mapResponse(response.data);
             default:
                 console.error(
                     "Could not find valid type to map response type to."
@@ -30,13 +30,17 @@ function GraphScreen({ chartIds }) {
 
     useEffect(() => {
         async function getCharts() {
-            let chartApi = new ChartApi();
             let chartsFromApi = [];
             for await (const chartId of chartIds) {
-                let chart = await chartApi.getChart(chartId);
-                chart.type = mapChartResponseTypeToType(chart.type);
+                let response = await ChartApi.getChart(chartId);
+                if (response === undefined) {
+                    console.error("Got undefined from getChart() response");
+                    return;
+                }
 
-                if (!chartsFromApi.includes(chart)) {
+                let chart = mapChartResponseToModel(response);
+                if (chart.type !== undefined
+                    && !chartsFromApi.includes(chart)) {
                     chartsFromApi.push(chart);
                 }
             }
@@ -55,11 +59,10 @@ function GraphScreen({ chartIds }) {
             >
                 <TouchableWithoutFeedback>
                     <FlatList
-                        //showVerticalScrollIndicator={false}
                         data={charts}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => {
-                            let graph = <Graph type={item.type} obj={item} />;
+                            let graph = <Chart type={item.type} obj={item} />;
                             return (
                                 <Card
                                     title={item.title}

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
     useCollapsible,
     AnimatedSection,
@@ -17,8 +17,11 @@ function CollapsibleInfoCard({
     whenPressed,
     width = "100%",
 }) {
-    const { animatedHeight, height, onPress, onLayout, state } =
-        useCollapsible();
+    const { animatedHeight,
+            height,
+            onPress,
+            onLayout,
+            state } = useCollapsible();
     const [colorButton, setColor] = useState(colors.light);
     const [isPressed, setPress] = useState(false);
 

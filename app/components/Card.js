@@ -4,7 +4,7 @@ import InsetShadow from "react-native-inset-shadow";
 import AppText from "./AppText";
 import colors from "../config/colors";
 import AppPicker from "../components/AppPicker";
-import Graph from "../components/Graph";
+import Chart from "../components/Chart";
 
 function Card({ title, subTitle, graph }) {
     return (

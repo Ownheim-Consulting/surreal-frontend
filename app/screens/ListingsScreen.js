@@ -1,57 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, ImageBackground, View } from "react-native";
+import { FlatList, StyleSheet, ImageBackground } from "react-native";
 import Screen from "../components/Screen";
-import Card from "../components/Card";
 import CollabsibleInfoCard from "../components/InfoCard";
 import colors from "../config/colors";
-import listings from "../config/listing";
 
-import ChoroplethMap from "../components/ChoroplethMap";
-import ChartApi from "../apis/chartApi";
-
-class ChartSelection {
-    constructor(id, title, subtitle, type) {
-        this.id = id;
-        this.title = title;
-        this.subTitle = subtitle;
-        this.type = this.mapResponseTypeToType(type);
-    }
-
-    mapResponseTypeToType(type) {
-        switch (type) {
-            case "choropleth_map":
-                return ChoroplethMap;
-            default:
-                console.error(
-                    "Could not find valid type to map response type to."
-                );
-                return undefined;
-        }
-    }
-}
+import ChartApi from "../apis/ChartApi";
+import ChartModel from "../models/ChartModel";
 
 function ListingsScreen({ handleChartSelectionChange }) {
     const [charts, setCharts] = useState();
 
     useEffect(() => {
         async function getCharts() {
-            let chartApi = new ChartApi();
-            let chartResponses = await chartApi.getCharts();
-
-            if (chartResponses === undefined) {
-                console.error("Got undefined from getCharts response");
+            let response = await ChartApi.getCharts();
+            if (response.data.length === 0 || response === undefined) {
+                console.error("Got undefined from getCharts() response");
                 return undefined;
             }
 
-            chartResponses.forEach((chartResponse) => {
-                chartResponse = new ChartSelection(
-                    chartResponse.id,
-                    chartResponse.title,
-                    chartResponse.subtitle,
-                    chartResponse.type
-                );
+            let charts = response.data;
+            charts.forEach((chart) => {
+                chart = ChartModel.mapResponse(chart);
             });
-            setCharts(chartResponses);
+
+            setCharts(charts);
             return undefined;
         }
 
