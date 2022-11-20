@@ -53,7 +53,7 @@ function ChoroplethMap(obj) {
                     responsive: false,
                 };
 
-                choroplethMap(
+                setChoroplethMap(
                     <Plotly
                         data={data}
                         layout={layout}
