@@ -1,7 +1,5 @@
-const baseUrl = "https://space-app-364302.uc.r.appspot.com";
-
-function Graph({ type, url }) {
-  return type(baseUrl + url);
+function Graph({ type, obj }) {
+  return type(obj);
 }
 
 export default Graph;

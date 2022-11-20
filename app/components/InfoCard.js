@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import {
@@ -10,79 +10,54 @@ import AppText from "./AppText";
 import defaultStyles from "../config/styles";
 import colors from "../config/colors";
 
-function InfoCard({
-  icon,
-  placeholder,
-  description,
-  selectedItem,
-  width = "100%",
+function CollapsibleInfoCard({
+    id,
+    title,
+    subTitle,
+    whenPressed,
+    width = "100%",
 }) {
   const { animatedHeight, height, onPress, onLayout, state } = useCollapsible();
   const [colorButton, setColor] = useState(colors.light);
-  const [isPressed, setPress] = useState(true);
+  const [isPressed, setPress] = useState(false);
 
-  graphs = [];
+    function onToggle() {
+        setColor(isPressed ? colors.danger.toString() : colors.light.toString());
+        whenPressed(id, !isPressed);
+        setPress(!isPressed);
+    }
 
-  function onPressPlus() {
-    graphs = graphs.concat(placeholder);
-    console.log(graphs);
-  }
-
-  function chooseColor() {
-    setColor(
-      isPressed === true ? colors.danger.toString() : colors.light.toString()
-    );
-  }
-
-  function combine() {
-    onPressPlus();
-    chooseColor();
-    setPress(isPressed === true ? false : true);
-  }
-  return (
-    <View style={[styles.mainContainer, { backgroundColor: colorButton }]}>
-      <TouchableWithoutFeedback onPress={onPress}>
-        <View style={[styles.container, { width: width }]}>
-          {icon && (
-            <MaterialCommunityIcons
-              name={icon}
-              size={30}
-              color={defaultStyles.colors.secondary}
-              style={styles.icon}
-            />
-          )}
-          {selectedItem ? (
-            <AppText style={styles.text}>{selectedItem.label}</AppText>
-          ) : (
-            <AppText style={styles.placeholder}>{placeholder}</AppText>
-          )}
-
-          <MaterialCommunityIcons
-            name="chevron-down"
-            size={30}
-            color={defaultStyles.colors.secondary}
-          />
+    return (
+        <View style={[styles.mainContainer, { backgroundColor: colorButton }]}>
+            <TouchableWithoutFeedback onPress={onPress}>
+                <View style={[styles.container, { width: width }]}>
+                    <AppText style={styles.placeholder}>{title}</AppText>
+                    <MaterialCommunityIcons
+                        name="chevron-down"
+                        size={30}
+                        color={defaultStyles.colors.secondary}
+                    />
+                </View>
+            </TouchableWithoutFeedback>
+            <AnimatedSection
+                style={styles.animate}
+                animatedHeight={animatedHeight}
+                onLayout={onLayout}
+                state={state}
+            >
+                <View style={[styles.textContainer]}>
+                <AppText style={styles.text}>{subTitle}</AppText>
+                <TouchableWithoutFeedback onPress={onToggle}>
+                    <MaterialCommunityIcons
+                    name="plus-circle"
+                    size={30}
+                    color={defaultStyles.colors.secondary}
+                    />
+                </TouchableWithoutFeedback>
+                </View>
+            </AnimatedSection>
         </View>
-      </TouchableWithoutFeedback>
-      <AnimatedSection
-        style={styles.animate}
-        animatedHeight={animatedHeight}
-        onLayout={onLayout}
-        state={state}
-      >
-        <View style={[styles.textContainer]}>
-          <AppText style={styles.text}>{description}</AppText>
-          <TouchableWithoutFeedback onPress={() => combine()}>
-            <MaterialCommunityIcons
-              name="plus-circle"
-              size={30}
-              color={defaultStyles.colors.secondary}
-            />
-          </TouchableWithoutFeedback>
-        </View>
-      </AnimatedSection>
-    </View>
-  );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -126,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default InfoCard;
+export default CollapsibleInfoCard;

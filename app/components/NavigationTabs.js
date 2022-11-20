@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -11,12 +11,24 @@ import HomeScreen from "../screens/HomeScreen";
 const Tab = createBottomTabNavigator();
 
 export default function NaviagtionTabs() {
+    const [chartSelections, setChartSelections] = useState([]);
+
+    function handleChartSelectionsChange(id, remove) {
+        if (!chartSelections.includes(id)) {
+            setChartSelections([...chartSelections, id]);
+            return;
+        }
+
+        if (remove) {
+            setChartSelections(chartSelections.filter(item => item !== id));
+        }
+        return;
+    }
   return (
     <NavigationContainer theme={myTheme}>
       <Tab.Navigator screenOptions={{ tabBarShowLabel: false }}>
         <Tab.Screen
           name="Select Data"
-          component={ListingsScreen}
           options={{
             tabBarIcon: (tabInfo) => (
               <MaterialCommunityIcons
@@ -26,7 +38,9 @@ export default function NaviagtionTabs() {
               />
             ),
           }}
-        />
+        >
+            {() => <ListingsScreen handleChartSelectionChange={handleChartSelectionsChange} /> }
+        </Tab.Screen>
         <Tab.Screen
           name="Home"
           component={HomeScreen}
@@ -42,7 +56,6 @@ export default function NaviagtionTabs() {
         />
         <Tab.Screen
           name="Graphs"
-          component={GraphScreen}
           options={{
             tabBarIcon: (tabInfo) => (
               <MaterialCommunityIcons
@@ -52,7 +65,9 @@ export default function NaviagtionTabs() {
               />
             ),
           }}
-        />
+        >
+            {() => <GraphScreen chartIds={chartSelections} /> }
+        </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   );

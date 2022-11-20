@@ -6,7 +6,7 @@ import colors from "../config/colors";
 import AppPicker from "../components/AppPicker";
 import Graph from "../components/Graph";
 
-function Card({ title, subTitle, graph, avg, corr }) {
+function Card({ title, subTitle, graph }) {
   return (
     <View style={styles.card}>
       <AppText style={styles.title} numberOfLines={1}>
@@ -17,17 +17,6 @@ function Card({ title, subTitle, graph, avg, corr }) {
       </AppText>
       <View style={styles.imageView}>
         <InsetShadow>{graph}</InsetShadow>
-      </View>
-      <View>
-        <AppPicker
-          items={""}
-          name="Select County"
-          icon="earth"
-          placeholder="Select County:"
-          width="100%"
-        />
-        <AppText>Average Value: {avg}</AppText>
-        <AppText>Temperature is Correlated: {corr}</AppText>
       </View>
     </View>
   );
@@ -43,7 +32,7 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
-    height: "80%",
+    height: 500,
   },
   detailsContainer: {
     padding: 20,

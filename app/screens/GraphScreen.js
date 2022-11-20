@@ -1,48 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   FlatList,
   TouchableWithoutFeedback,
   ImageBackground,
-  Text,
 } from "react-native";
+
 import Screen from "../components/Screen";
 import Card from "../components/Card";
 import colors from "../config/colors";
 import Graph from "../components/Graph";
 import ChoroplethMap from "../components/ChoroplethMap";
+import ChartApi from "../apis/chartApi";
 
-class GraphSelection {
-  constructor(title, subTitle, url, type) {
-    this.title = title;
-    this.subTitle = subTitle;
-    this.url = url;
-    this.type = type;
-  }
-}
 
-const graphs = [
-  {
-    id: 1,
-    graphSelection: new GraphSelection(
-      "USA % Unemployment By County",
-      "Data is Sourced from the U.S. Census Bureau",
-      "/api/chart/choropleth-map/dataset/UNEMP/viewing-area/USA/level/COUNTY",
-      ChoroplethMap
-    ),
-  },
-  {
-    id: 2,
-    graphSelection: new GraphSelection(
-      "USA % Unemployment By County",
-      "Data is Sourced from the U.S. Census Bureau",
-      "/api/chart/choropleth-map/dataset/UNEMP/viewing-area/USA/level/COUNTY",
-      ChoroplethMap
-    ),
-  },
-];
+function GraphScreen({chartIds}) {
+    const [charts, setCharts] = useState([]);
 
-function GraphScreen() {
+    function mapChartResponseTypeToType(type) {
+        switch (type) {
+        case "choropleth_map":
+            return ChoroplethMap;
+        default:
+            console.error("Could not find valid type to map response type to.");
+            return undefined;
+        }
+    }
+
+    useEffect(() => {
+        async function getCharts() {
+            let chartApi = new ChartApi();
+            let chartsFromApi = [];
+            for await (const chartId of chartIds) {
+                let chart = await chartApi.getChart(chartId);
+                chart.type = mapChartResponseTypeToType(chart.type);
+
+                if (!chartsFromApi.includes(chart)) {
+                    chartsFromApi.push(chart);
+                }
+            }
+            setCharts(chartsFromApi);
+        }
+
+        getCharts();
+    }, [chartIds]);
+
   return (
     <Screen style={styles.screen}>
       <ImageBackground
@@ -53,19 +55,19 @@ function GraphScreen() {
         <TouchableWithoutFeedback>
           <FlatList
             //showVerticalScrollIndicator={false}
-            data={graphs}
+            data={charts}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => {
               let graph = (
                 <Graph
-                  type={item.graphSelection.type}
-                  url={item.graphSelection.url}
+                  type={item.type}
+                  obj={item}
                 />
               );
               return (
                 <Card
-                  title={item.graphSelection.title}
-                  subTitle={item.graphSelection.subTitle}
+                  title={item.title}
+                  subTitle={item.subtitle}
                   graph={graph}
                 />
               );

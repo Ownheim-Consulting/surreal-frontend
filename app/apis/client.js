@@ -1,18 +1,9 @@
-import { create } from "apisauce";
+class ApiClient {
+    constructor(baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+}
 
-const apiClient = create({
-  baseURL: "https://space-app-364302.uc.r.appspot.com",
-});
-
-const get = apiClient.get;
-apiClient.get = async (url) => {
-  const response = await get(url);
-
-  if (response.ok) {
-    return response;
-  }
-
-  console.log(response);
+export default {
+    ApiClient,
 };
-
-export default apiClient;
