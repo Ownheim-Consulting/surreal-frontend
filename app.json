@@ -1,35 +1,32 @@
 {
-  "expo": {
-    "name": "Surreal",
-    "slug": "Surreal",
-    "version": "0.3.0",
-    "privacy": "unlisted",
-    "orientation": "portrait",
-    "icon": "./app/assets/surreal2.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./app/assets/surreal2.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./app/assets/surreal2.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "expo": {
+        "name": "Surreal",
+        "slug": "Surreal",
+        "version": "0.3.0",
+        "privacy": "unlisted",
+        "orientation": "portrait",
+        "icon": "./app/assets/surreal2.png",
+        "userInterfaceStyle": "light",
+        "splash": {
+            "image": "./app/assets/surreal2.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./app/assets/surreal2.png",
+                "backgroundColor": "#FFFFFF"
+            }
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        }
     }
-    
-  }
 }

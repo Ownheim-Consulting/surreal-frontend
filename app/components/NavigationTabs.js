@@ -20,66 +20,72 @@ export default function NaviagtionTabs() {
         }
 
         if (remove) {
-            setChartSelections(chartSelections.filter(item => item !== id));
+            setChartSelections(chartSelections.filter((item) => item !== id));
         }
         return;
     }
-  return (
-    <NavigationContainer theme={myTheme}>
-      <Tab.Navigator screenOptions={{ tabBarShowLabel: false }}>
-        <Tab.Screen
-          name="Select Data"
-          options={{
-            tabBarIcon: (tabInfo) => (
-              <MaterialCommunityIcons
-                name="plus-box-outline"
-                size={30}
-                color={tabInfo.color}
-              />
-            ),
-          }}
-        >
-            {() => <ListingsScreen handleChartSelectionChange={handleChartSelectionsChange} /> }
-        </Tab.Screen>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            tabBarIcon: (tabInfo) => (
-              <MaterialCommunityIcons
-                name="home"
-                size={30}
-                color={tabInfo.color}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Graphs"
-          options={{
-            tabBarIcon: (tabInfo) => (
-              <MaterialCommunityIcons
-                name="chart-line"
-                size={30}
-                color={tabInfo.color}
-              />
-            ),
-          }}
-        >
-            {() => <GraphScreen chartIds={chartSelections} /> }
-        </Tab.Screen>
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
+    return (
+        <NavigationContainer theme={myTheme}>
+            <Tab.Navigator screenOptions={{ tabBarShowLabel: false }}>
+                <Tab.Screen
+                    name="Select Data"
+                    options={{
+                        tabBarIcon: (tabInfo) => (
+                            <MaterialCommunityIcons
+                                name="plus-box-outline"
+                                size={30}
+                                color={tabInfo.color}
+                            />
+                        ),
+                    }}
+                >
+                    {() => (
+                        <ListingsScreen
+                            handleChartSelectionChange={
+                                handleChartSelectionsChange
+                            }
+                        />
+                    )}
+                </Tab.Screen>
+                <Tab.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{
+                        tabBarIcon: (tabInfo) => (
+                            <MaterialCommunityIcons
+                                name="home"
+                                size={30}
+                                color={tabInfo.color}
+                            />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="Graphs"
+                    options={{
+                        tabBarIcon: (tabInfo) => (
+                            <MaterialCommunityIcons
+                                name="chart-line"
+                                size={30}
+                                color={tabInfo.color}
+                            />
+                        ),
+                    }}
+                >
+                    {() => <GraphScreen chartIds={chartSelections} />}
+                </Tab.Screen>
+            </Tab.Navigator>
+        </NavigationContainer>
+    );
 }
 
 const myTheme = {
-  colors: {
-    primary: colors.danger,
-    background: colors.dark_blue,
-    text: colors.light,
-    border: colors.dark_blue,
-    notification: colors.danger,
-    card: colors.dark_blue,
-  },
+    colors: {
+        primary: colors.danger,
+        background: colors.dark_blue,
+        text: colors.light,
+        border: colors.dark_blue,
+        notification: colors.danger,
+        card: colors.dark_blue,
+    },
 };

@@ -19,16 +19,18 @@ class ChartSelection {
 
     mapResponseTypeToType(type) {
         switch (type) {
-        case "choropleth_map":
-            return ChoroplethMap;
-        default:
-            console.error("Could not find valid type to map response type to.");
-            return undefined;
+            case "choropleth_map":
+                return ChoroplethMap;
+            default:
+                console.error(
+                    "Could not find valid type to map response type to."
+                );
+                return undefined;
         }
     }
 }
 
-function ListingsScreen({handleChartSelectionChange}) {
+function ListingsScreen({ handleChartSelectionChange }) {
     const [charts, setCharts] = useState();
 
     useEffect(() => {
@@ -42,10 +44,12 @@ function ListingsScreen({handleChartSelectionChange}) {
             }
 
             chartResponses.forEach((chartResponse) => {
-                chartResponse = new ChartSelection(chartResponse.id,
-                                        chartResponse.title,
-                                        chartResponse.subtitle,
-                                        chartResponse.type);
+                chartResponse = new ChartSelection(
+                    chartResponse.id,
+                    chartResponse.title,
+                    chartResponse.subtitle,
+                    chartResponse.type
+                );
             });
             setCharts(chartResponses);
             return undefined;
@@ -56,40 +60,40 @@ function ListingsScreen({handleChartSelectionChange}) {
         }
     }, [charts]);
 
-  return (
-    <Screen style={styles.screen}>
-      <ImageBackground
-        styles={styles.background}
-        source={require("../assets/background.png")}
-        style={styles.image}
-      >
-        <FlatList
-          data={charts}
-          keyExtractor={(chart) => chart.id.toString()}
-          renderItem={({ item }) => (
-          <CollabsibleInfoCard
-              id={item.id}
-              title={item.title}
-              subTitle={item.subtitle}
-              whenPressed={handleChartSelectionChange}
-              width={"100%"}
-            />
-          )}
-        />
-      </ImageBackground>
-    </Screen>
-  );
+    return (
+        <Screen style={styles.screen}>
+            <ImageBackground
+                styles={styles.background}
+                source={require("../assets/background.png")}
+                style={styles.image}
+            >
+                <FlatList
+                    data={charts}
+                    keyExtractor={(chart) => chart.id.toString()}
+                    renderItem={({ item }) => (
+                        <CollabsibleInfoCard
+                            id={item.id}
+                            title={item.title}
+                            subTitle={item.subtitle}
+                            whenPressed={handleChartSelectionChange}
+                            width={"100%"}
+                        />
+                    )}
+                />
+            </ImageBackground>
+        </Screen>
+    );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    backgroundColor: colors.primary,
-  },
-  image: {
-    backgroundColor: "transparent",
-    flex: 1,
-    justifyContent: "flex-end",
-  },
+    screen: {
+        backgroundColor: colors.primary,
+    },
+    image: {
+        backgroundColor: "transparent",
+        flex: 1,
+        justifyContent: "flex-end",
+    },
 });
 
 export default ListingsScreen;

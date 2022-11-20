@@ -5,15 +5,15 @@ import Screen from "./app/components/Screen";
 import colors from "./app/config/colors";
 
 export default function App() {
-  return (
-    <Screen style={styles.screen}>
-      <NaviagtionTabs />
-    </Screen>
-  );
+    return (
+        <Screen style={styles.screen}>
+            <NaviagtionTabs />
+        </Screen>
+    );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    backgroundColor: colors.dark_blue,
-  },
+    screen: {
+        backgroundColor: colors.dark_blue,
+    },
 });

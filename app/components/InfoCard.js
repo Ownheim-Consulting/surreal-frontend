@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import {
-  useCollapsible,
-  AnimatedSection,
+    useCollapsible,
+    AnimatedSection,
 } from "reanimated-collapsible-helpers";
 
 import AppText from "./AppText";
@@ -17,12 +17,15 @@ function CollapsibleInfoCard({
     whenPressed,
     width = "100%",
 }) {
-  const { animatedHeight, height, onPress, onLayout, state } = useCollapsible();
-  const [colorButton, setColor] = useState(colors.light);
-  const [isPressed, setPress] = useState(false);
+    const { animatedHeight, height, onPress, onLayout, state } =
+        useCollapsible();
+    const [colorButton, setColor] = useState(colors.light);
+    const [isPressed, setPress] = useState(false);
 
     function onToggle() {
-        setColor(isPressed ? colors.danger.toString() : colors.light.toString());
+        setColor(
+            isPressed ? colors.danger.toString() : colors.light.toString()
+        );
         whenPressed(id, !isPressed);
         setPress(!isPressed);
     }
@@ -46,59 +49,59 @@ function CollapsibleInfoCard({
                 state={state}
             >
                 <View style={[styles.textContainer]}>
-                <AppText style={styles.text}>{subTitle}</AppText>
-                <TouchableWithoutFeedback onPress={onToggle}>
-                    <MaterialCommunityIcons
-                    name="plus-circle"
-                    size={30}
-                    color={defaultStyles.colors.secondary}
-                    />
-                </TouchableWithoutFeedback>
+                    <AppText style={styles.text}>{subTitle}</AppText>
+                    <TouchableWithoutFeedback onPress={onToggle}>
+                        <MaterialCommunityIcons
+                            name="plus-circle"
+                            size={30}
+                            color={defaultStyles.colors.secondary}
+                        />
+                    </TouchableWithoutFeedback>
                 </View>
             </AnimatedSection>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "transparent",
-    borderTopEndRadius: 40,
-    borderTopStartRadius: 40,
-    borderBottomEndRadius: 40,
-    borderBottomStartRadius: 40,
-    flexDirection: "row",
-    paddingTop: 25,
-    paddingBottom: 25,
-    paddingHorizontal: 25,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  placeholder: {
-    color: defaultStyles.colors.secondary,
-    flex: 1,
-  },
-  text: {
-    flex: 1,
-  },
-  textContainer: {
-    padding: 25,
-    borderBottomEndRadius: 40,
-    borderBottomStartRadius: 40,
-    width: "100%",
-    alignSelf: "center",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  animate: {
-    easing: 10000,
-  },
-  mainContainer: {
-    backgroundColor: defaultStyles.colors.light,
-    margin: 10,
-    borderRadius: 40,
-  },
+    container: {
+        backgroundColor: "transparent",
+        borderTopEndRadius: 40,
+        borderTopStartRadius: 40,
+        borderBottomEndRadius: 40,
+        borderBottomStartRadius: 40,
+        flexDirection: "row",
+        paddingTop: 25,
+        paddingBottom: 25,
+        paddingHorizontal: 25,
+    },
+    icon: {
+        marginRight: 10,
+    },
+    placeholder: {
+        color: defaultStyles.colors.secondary,
+        flex: 1,
+    },
+    text: {
+        flex: 1,
+    },
+    textContainer: {
+        padding: 25,
+        borderBottomEndRadius: 40,
+        borderBottomStartRadius: 40,
+        width: "100%",
+        alignSelf: "center",
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    animate: {
+        easing: 10000,
+    },
+    mainContainer: {
+        backgroundColor: defaultStyles.colors.light,
+        margin: 10,
+        borderRadius: 40,
+    },
 });
 
 export default CollapsibleInfoCard;
