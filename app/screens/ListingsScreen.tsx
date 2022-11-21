@@ -4,27 +4,24 @@ import Screen from "../components/Screen";
 import CollabsibleInfoCard from "../components/InfoCard";
 import colors from "../config/colors";
 
-import ChartApi from "../apis/ChartApi";
+import { ChartApi } from "../apis/ChartApi";
 import ChartModel from "../models/ChartModel";
 
-function ListingsScreen({ handleChartSelectionChange }) {
-    const [charts, setCharts] = useState();
+interface ListingsScreenProps {
+    handleChartSelectionChange: (id: number, isPresent: boolean) => void;
+}
+
+function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
+    const [charts, setCharts] = useState<Array<ChartModel>>();
 
     useEffect(() => {
         async function getCharts() {
-            let response = await ChartApi.getCharts();
-            if (response.data.length === 0 || response === undefined) {
-                console.error("Got undefined from getCharts() response");
-                return undefined;
-            }
-
-            let charts = response.data;
-            charts.forEach((chart) => {
+            let charts = await ChartApi.getCharts();
+            charts!.forEach((chart) => {
                 chart = ChartModel.mapResponse(chart);
             });
 
             setCharts(charts);
-            return undefined;
         }
 
         if (!charts) {
@@ -35,7 +32,6 @@ function ListingsScreen({ handleChartSelectionChange }) {
     return (
         <Screen style={styles.screen}>
             <ImageBackground
-                styles={styles.background}
                 source={require("../assets/background.png")}
                 style={styles.image}
             >

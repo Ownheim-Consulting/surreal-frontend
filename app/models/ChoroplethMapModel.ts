@@ -1,20 +1,24 @@
 import MapChartModel from "./MapChartModel";
-import ChoroplethMap from "../components/ChoroplethMap";
 
 class ChoroplethMapModel extends MapChartModel {
+    readonly geoDataUri: string;
+    readonly geoDataFormat: string;
+    readonly zDataUri: string;
+    readonly zDataFormat: string;
+
     constructor(
-        id,
-        title,
-        subtitle,
-        type,
-        legendTitle,
-        datasetName,
-        viewingAreaName,
-        datasetLevel,
-        geoDataUri,
-        geoDataFormat,
-        zDataUri,
-        zDataFormat
+        id: number,
+        title: string,
+        subtitle: string,
+        type: string,
+        legendTitle: string,
+        datasetName: string,
+        viewingAreaName: string,
+        datasetLevel: string,
+        geoDataUri: string,
+        geoDataFormat: string,
+        zDataUri: string,
+        zDataFormat: string
     ) {
         super(
             id,
@@ -32,10 +36,7 @@ class ChoroplethMapModel extends MapChartModel {
         this.zDataFormat = zDataFormat;
     }
 
-    static mapResponse(responseData) {
-        if (responseData.type === "choropleth_map") {
-            responseData.type = ChoroplethMap;
-        }
+    static mapResponse(responseData: any) {
         return new ChoroplethMapModel(
             responseData.id,
             responseData.title,

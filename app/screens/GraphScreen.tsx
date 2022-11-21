@@ -10,16 +10,23 @@ import Screen from "../components/Screen";
 import Card from "../components/Card";
 import colors from "../config/colors";
 import Chart from "../components/Chart";
-import ChartApi from "../apis/ChartApi";
+import { ChartApi } from "../apis/ChartApi";
 import ChoroplethMapModel from "../models/ChoroplethMapModel";
+import ChartModel from "../models/ChartModel";
 
-function GraphScreen({ chartIds }) {
-    const [charts, setCharts] = useState([]);
+interface GraphScreenProps {
+    chartIds: Array<number>;
+}
 
-    function mapChartResponseToModel(response) {
-        switch (response.data.type) {
+function GraphScreen({ chartIds }: GraphScreenProps) {
+    const [charts, setCharts] = useState<Array<ChartModel>>([]);
+
+    function mapChartResponseToModel(
+        chartResponse: any
+    ): ChartModel | undefined {
+        switch (chartResponse.type) {
             case "choropleth_map":
-                return ChoroplethMapModel.mapResponse(response.data);
+                return ChoroplethMapModel.mapResponse(chartResponse);
             default:
                 console.error(
                     "Could not find valid type to map response type to."
@@ -30,17 +37,12 @@ function GraphScreen({ chartIds }) {
 
     useEffect(() => {
         async function getCharts() {
-            let chartsFromApi = [];
+            let chartsFromApi: Array<ChartModel> = [];
             for await (const chartId of chartIds) {
-                let response = await ChartApi.getChart(chartId);
-                if (response === undefined) {
-                    console.error("Got undefined from getChart() response");
-                    return;
-                }
+                let response: ChartModel = await ChartApi.getChart(chartId);
 
-                let chart = mapChartResponseToModel(response);
-                if (chart.type !== undefined
-                    && !chartsFromApi.includes(chart)) {
+                let chart = mapChartResponseToModel(response!);
+                if (chart && !chartsFromApi.includes(chart)) {
                     chartsFromApi.push(chart);
                 }
             }
@@ -53,14 +55,13 @@ function GraphScreen({ chartIds }) {
     return (
         <Screen style={styles.screen}>
             <ImageBackground
-                styles={styles.background}
                 source={require("../assets/background.png")}
                 style={styles.image}
             >
                 <TouchableWithoutFeedback>
                     <FlatList
                         data={charts}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => {
                             let graph = <Chart type={item.type} obj={item} />;
                             return (

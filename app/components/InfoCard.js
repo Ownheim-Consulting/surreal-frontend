@@ -17,11 +17,8 @@ function CollapsibleInfoCard({
     whenPressed,
     width = "100%",
 }) {
-    const { animatedHeight,
-            height,
-            onPress,
-            onLayout,
-            state } = useCollapsible();
+    const { animatedHeight, height, onPress, onLayout, state } =
+        useCollapsible();
     const [colorButton, setColor] = useState(colors.light);
     const [isPressed, setPress] = useState(false);
 
