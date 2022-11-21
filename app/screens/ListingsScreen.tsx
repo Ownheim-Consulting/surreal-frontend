@@ -15,7 +15,7 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
     const [charts, setCharts] = useState<Array<ChartModel>>();
 
     useEffect(() => {
-        async function getCharts() {
+        async function getCharts(): Promise<void> {
             let charts = await ChartApi.getCharts();
             charts!.forEach((chart) => {
                 chart = ChartModel.mapResponse(chart);

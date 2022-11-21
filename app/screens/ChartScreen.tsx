@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import {
-    StyleSheet,
     FlatList,
     TouchableWithoutFeedback,
     ImageBackground,
+    StyleSheet,
 } from "react-native";
 
-import Screen from "../components/Screen";
 import Card from "../components/Card";
-import colors from "../config/colors";
 import Chart from "../components/Chart";
 import { ChartApi } from "../apis/ChartApi";
-import ChoroplethMapModel from "../models/ChoroplethMapModel";
 import ChartModel from "../models/ChartModel";
+import ChoroplethMapModel from "../models/ChoroplethMapModel";
+import colors from "../config/colors";
+import Screen from "../components/Screen";
 
-interface GraphScreenProps {
+interface ChartScreenProps {
     chartIds: Array<number>;
 }
 
-function GraphScreen({ chartIds }: GraphScreenProps) {
+function ChartScreen({ chartIds }: ChartScreenProps) {
     const [charts, setCharts] = useState<Array<ChartModel>>([]);
 
     function mapChartResponseToModel(
@@ -36,7 +36,7 @@ function GraphScreen({ chartIds }: GraphScreenProps) {
     }
 
     useEffect(() => {
-        async function getCharts() {
+        async function getCharts(): Promise<void> {
             let chartsFromApi: Array<ChartModel> = [];
             for await (const chartId of chartIds) {
                 let response: ChartModel = await ChartApi.getChart(chartId);
@@ -63,16 +63,15 @@ function GraphScreen({ chartIds }: GraphScreenProps) {
                         data={charts}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => {
-                            let graph = <Chart type={item.type} obj={item} />;
+                            let chart = <Chart type={item.type} obj={item} />;
                             return (
                                 <Card
                                     title={item.title}
-                                    subTitle={item.subtitle}
-                                    graph={graph}
+                                    subtitle={item.subtitle}
+                                    inner={chart}
                                 />
                             );
-                        }}
-                    />
+                        }} />
                 </TouchableWithoutFeedback>
             </ImageBackground>
         </Screen>
@@ -101,4 +100,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default GraphScreen;
+export default ChartScreen;

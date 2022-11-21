@@ -12,7 +12,6 @@ function ChoroplethMap(choroplethMapModel) {
             let geoData = choroplethMapModel.geoDataUri;
             let zData = choroplethMapModel.zDataUri;
 
-            console.log(geoData);
             d3.csv(zData)
                 .then(function (rows) {
                     function unpack(rows, key) {

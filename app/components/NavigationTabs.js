@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import ListingsScreen from "../screens/ListingsScreen";
+
+import ChartScreen from "../screens/ChartScreen";
 import colors from "../config/colors";
-import GraphScreen from "../screens/GraphScreen";
 import HomeScreen from "../screens/HomeScreen";
+import ListingsScreen from "../screens/ListingsScreen";
 
 const Tab = createBottomTabNavigator();
 
-export default function NaviagtionTabs() {
+function NavigationTabs() {
     const [chartSelections, setChartSelections] = useState([]);
 
     function handleChartSelectionsChange(id, remove) {
@@ -61,7 +61,7 @@ export default function NaviagtionTabs() {
                     }}
                 />
                 <Tab.Screen
-                    name="Graphs"
+                    name="Charts"
                     options={{
                         tabBarIcon: (tabInfo) => (
                             <MaterialCommunityIcons
@@ -72,7 +72,7 @@ export default function NaviagtionTabs() {
                         ),
                     }}
                 >
-                    {() => <GraphScreen chartIds={chartSelections} />}
+                    {() => <ChartScreen chartIds={chartSelections} />}
                 </Tab.Screen>
             </Tab.Navigator>
         </NavigationContainer>
@@ -89,3 +89,5 @@ const myTheme = {
         card: colors.dark_blue,
     },
 };
+
+export default NavigationTabs;
