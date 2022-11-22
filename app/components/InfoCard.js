@@ -1,107 +1,78 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {
-    useCollapsible,
-    AnimatedSection,
-} from "reanimated-collapsible-helpers";
+import { View, StyleSheet } from "react-native";
+import Checkbox from "expo-checkbox";
 
 import AppText from "./AppText";
-import defaultStyles from "../config/styles";
 import colors from "../config/colors";
 
-function CollapsibleInfoCard({
-    id,
-    title,
-    subTitle,
-    whenPressed,
-    width = "100%",
-}) {
-    const { animatedHeight, height, onPress, onLayout, state } =
-        useCollapsible();
-    const [colorButton, setColor] = useState(colors.light);
-    const [isPressed, setPress] = useState(false);
+function InfoCard({ id, title, subTitle, whenPressed }) {
+    const [isCheckboxToggled, setCheckboxToggled] = useState(false);
 
-    function onToggle() {
-        setColor(
-            isPressed ? colors.danger.toString() : colors.light.toString()
-        );
-        whenPressed(id, !isPressed);
-        setPress(!isPressed);
+    function onCheckboxToggle() {
+        whenPressed(id, isCheckboxToggled);
+        setCheckboxToggled(!isCheckboxToggled);
     }
 
     return (
-        <View style={[styles.mainContainer, { backgroundColor: colorButton }]}>
-            <TouchableWithoutFeedback onPress={onPress}>
-                <View style={[styles.container, { width: width }]}>
-                    <AppText style={styles.placeholder}>{title}</AppText>
-                    <MaterialCommunityIcons
-                        name="chevron-down"
-                        size={30}
-                        color={defaultStyles.colors.secondary}
-                    />
-                </View>
-            </TouchableWithoutFeedback>
-            <AnimatedSection
-                style={styles.animate}
-                animatedHeight={animatedHeight}
-                onLayout={onLayout}
-                state={state}
-            >
-                <View style={[styles.textContainer]}>
-                    <AppText style={styles.text}>{subTitle}</AppText>
-                    <TouchableWithoutFeedback onPress={onToggle}>
-                        <MaterialCommunityIcons
-                            name="plus-circle"
-                            size={30}
-                            color={defaultStyles.colors.secondary}
-                        />
-                    </TouchableWithoutFeedback>
-                </View>
-            </AnimatedSection>
+        <View style={[styles.container]}>
+            <View style={[styles.textColumn]}>
+                <AppText
+                    style={styles.title}
+                    numberOfLines={1}
+                    adjustsFontSizeToFit={true}
+                >
+                    {title}
+                </AppText>
+                <AppText
+                    style={styles.subtitle}
+                    numberOfLines={2}
+                    adjustsFontSizeToFit={true}
+                >
+                    {subTitle}
+                </AppText>
+            </View>
+            <View style={styles.checkboxColumn}>
+                <Checkbox
+                    style={styles.checkbox}
+                    value={isCheckboxToggled}
+                    onValueChange={onCheckboxToggle}
+                    color={colors.dark}
+                />
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "transparent",
-        borderTopEndRadius: 40,
-        borderTopStartRadius: 40,
-        borderBottomEndRadius: 40,
-        borderBottomStartRadius: 40,
-        flexDirection: "row",
-        paddingTop: 25,
-        paddingBottom: 25,
-        paddingHorizontal: 25,
-    },
-    icon: {
-        marginRight: 10,
-    },
-    placeholder: {
-        color: defaultStyles.colors.secondary,
         flex: 1,
-    },
-    text: {
-        flex: 1,
-    },
-    textContainer: {
-        padding: 25,
-        borderBottomEndRadius: 40,
-        borderBottomStartRadius: 40,
-        width: "100%",
-        alignSelf: "center",
         flexDirection: "row",
+        justifyContent: "space-evenly",
+        borderRadius: 10,
+        marginHorizontal: 20,
+        paddingTop: 10,
+        paddingBottom: 10,
+        overflow: "hidden",
+        backgroundColor: colors.lightGray,
+    },
+    textColumn: {
+        width: "75%",
+        alignItems: "flex-start",
+    },
+    checkboxColumn: {
         alignItems: "center",
+        justifyContent: "center",
     },
-    animate: {
-        easing: 10000,
+    title: {
+        fontWeight: "bold",
+        fontSize: 18,
+        color: "black",
     },
-    mainContainer: {
-        backgroundColor: defaultStyles.colors.light,
-        margin: 10,
-        borderRadius: 40,
+    subtitle: {
+        fontWeight: "normal",
+        fontSize: 15,
+        color: "black",
     },
 });
 
-export default CollapsibleInfoCard;
+export default InfoCard;

@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 
-import ChartModel from "../models/ChartModel";
+import { Chart } from "../models/Chart";
 
 const instance = axios.create({
     baseURL: "https://space-app-364302.uc.r.appspot.com",
@@ -13,12 +13,12 @@ const handleError = (error: AxiosError) => console.error(error);
 
 const requests = {
     get: (url: string) =>
-        instance.get<ChartModel>(url).then(processResponse).catch(handleError),
+        instance.get<Chart>(url).then(processResponse).catch(handleError),
 };
 
 export const ChartApi = {
-    getCharts: (): Promise<Array<ChartModel>> =>
+    getCharts: (): Promise<Array<Chart>> =>
         requests.get("/api/v1/chart-service/charts"),
-    getChart: (id: number): Promise<ChartModel> =>
+    getChart: (id: number): Promise<Chart> =>
         requests.get(`/api/v1/chart-service/chart/${id}`),
 };

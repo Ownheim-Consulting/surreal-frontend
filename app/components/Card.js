@@ -8,10 +8,18 @@ import colors from "../config/colors";
 function Card({ title, subtitle, inner }) {
     return (
         <View style={styles.card}>
-            <AppText style={styles.title} numberOfLines={1} adjustsFontSizeToFit={true}>
+            <AppText
+                style={styles.title}
+                numberOfLines={1}
+                adjustsFontSizeToFit={true}
+            >
                 {title}
             </AppText>
-            <AppText style={styles.subtitle} numberOfLines={2} adjustsFontSizeToFit={true}>
+            <AppText
+                style={styles.subtitle}
+                numberOfLines={2}
+                adjustsFontSizeToFit={true}
+            >
                 {subtitle}
             </AppText>
             <View style={styles.imageView}>
@@ -24,8 +32,7 @@ function Card({ title, subtitle, inner }) {
 const styles = StyleSheet.create({
     card: {
         borderRadius: 15,
-        backgroundColor: colors.light,
-        marginTop: 20,
+        backgroundColor: colors.lightGray,
         marginHorizontal: 20,
         overflow: "hidden",
         padding: 10,

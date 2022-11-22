@@ -1,27 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, ImageBackground } from "react-native";
-import Screen from "../components/Screen";
-import CollabsibleInfoCard from "../components/InfoCard";
-import colors from "../config/colors";
+import { FlatList, StyleSheet } from "react-native";
 
 import { ChartApi } from "../apis/ChartApi";
-import ChartModel from "../models/ChartModel";
+import { Chart } from "../models/Chart";
+import CollabsibleInfoCard from "../components/InfoCard";
+import colors from "../config/colors";
+import Screen from "../components/Screen";
 
 interface ListingsScreenProps {
     handleChartSelectionChange: (id: number, isPresent: boolean) => void;
 }
 
 function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
-    const [charts, setCharts] = useState<Array<ChartModel>>();
+    const [charts, setCharts] = useState<Array<Chart>>();
 
     useEffect(() => {
         async function getCharts(): Promise<void> {
-            let charts = await ChartApi.getCharts();
-            charts!.forEach((chart) => {
-                chart = ChartModel.mapResponse(chart);
+            let apiCharts = await ChartApi.getCharts();
+
+            if (!apiCharts) {
+                console.error("Did not recieve any charts from API");
+                return;
+            }
+
+            apiCharts.forEach((chart) => {
+                chart = Chart.mapResponse(chart);
             });
 
-            setCharts(charts);
+            setCharts(apiCharts);
         }
 
         if (!charts) {
@@ -31,36 +37,27 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
 
     return (
         <Screen style={styles.screen}>
-            <ImageBackground
-                source={require("../assets/background.png")}
-                style={styles.image}
-            >
-                <FlatList
-                    data={charts}
-                    keyExtractor={(chart) => chart.id.toString()}
-                    renderItem={({ item }) => (
-                        <CollabsibleInfoCard
-                            id={item.id}
-                            title={item.title}
-                            subTitle={item.subtitle}
-                            whenPressed={handleChartSelectionChange}
-                            width={"100%"}
-                        />
-                    )}
-                />
-            </ImageBackground>
+            <FlatList
+                data={charts}
+                keyExtractor={(chart) => chart.id.toString()}
+                renderItem={({ item }) => (
+                    <CollabsibleInfoCard
+                        id={item.id}
+                        title={item.title}
+                        subTitle={item.subtitle}
+                        whenPressed={handleChartSelectionChange}
+                    />
+                )}
+            />
         </Screen>
     );
 }
 
 const styles = StyleSheet.create({
     screen: {
-        backgroundColor: colors.primary,
-    },
-    image: {
-        backgroundColor: "transparent",
-        flex: 1,
-        justifyContent: "flex-end",
+        backgroundColor: colors.white,
+        borderTopRightRadius: 15,
+        borderTopLeftRadius: 15,
     },
 });
 
