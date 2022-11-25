@@ -1,20 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet } from "react-native";
-import Checkbox from "expo-checkbox";
 
-import AppText from "./AppText";
+import AppText from "../components/AppText";
 import colors from "../config/colors";
 
-function InfoCard({ id, title, subTitle, whenPressed }) {
-    const [isCheckboxToggled, setCheckboxToggled] = useState(false);
+interface InfoCardProps {
+    id: number;
+    title: string;
+    subtitle: string;
+    children: any;
+}
 
-    function onCheckboxToggle() {
-        whenPressed(id, isCheckboxToggled);
-        setCheckboxToggled(!isCheckboxToggled);
-    }
-
+function InfoCard({ id, title, subtitle, children }: InfoCardProps) {
     return (
-        <View style={[styles.container]}>
+        <View key={id} style={[styles.container]}>
             <View style={[styles.textColumn]}>
                 <AppText
                     style={styles.title}
@@ -28,17 +27,10 @@ function InfoCard({ id, title, subTitle, whenPressed }) {
                     numberOfLines={2}
                     adjustsFontSizeToFit={true}
                 >
-                    {subTitle}
+                    {subtitle}
                 </AppText>
             </View>
-            <View style={styles.checkboxColumn}>
-                <Checkbox
-                    style={styles.checkbox}
-                    value={isCheckboxToggled}
-                    onValueChange={onCheckboxToggle}
-                    color={colors.dark}
-                />
-            </View>
+            {children}
         </View>
     );
 }
@@ -58,10 +50,6 @@ const styles = StyleSheet.create({
     textColumn: {
         width: "75%",
         alignItems: "flex-start",
-    },
-    checkboxColumn: {
-        alignItems: "center",
-        justifyContent: "center",
     },
     title: {
         fontWeight: "bold",

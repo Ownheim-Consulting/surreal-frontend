@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-    FlatList,
-    TouchableWithoutFeedback,
-    ImageBackground,
-    StyleSheet,
-} from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
+import InsetShadow from "react-native-inset-shadow";
 
 import Card from "../components/Card";
 import { Chart } from "../components/Chart";
@@ -60,10 +56,14 @@ export function ChartScreen({ chartIds }: ChartScreenProps) {
                     let chart = <Chart type={item.type} obj={item} />;
                     return (
                         <Card
+                            id={item.id}
                             title={item.title}
                             subtitle={item.subtitle}
-                            inner={chart}
-                        />
+                        >
+                            <View style={styles.chartView}>
+                                <InsetShadow>{chart}</InsetShadow>
+                            </View>
+                        </Card>
                     );
                 }}
             />
@@ -77,9 +77,11 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
     },
-    chartRow: {
-        flex: 1,
+    chartView: {
+        borderRadius: 10,
+        overflow: "hidden",
         width: "100%",
+        height: "80%",
     },
 });
 

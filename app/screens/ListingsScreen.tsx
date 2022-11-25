@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
+import Checkbox from "expo-checkbox";
 
 import { ChartApi } from "../apis/ChartApi";
 import { Chart } from "../models/Chart";
-import CollabsibleInfoCard from "../components/InfoCard";
+import InfoCard from "../components/InfoCard";
 import colors from "../config/colors";
 import Screen from "../components/Screen";
 
@@ -13,6 +14,7 @@ interface ListingsScreenProps {
 
 function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
     const [charts, setCharts] = useState<Array<Chart>>();
+    const [checkboxToggle, setCheckboxToggle] = useState<boolean>(false);
 
     useEffect(() => {
         async function getCharts(): Promise<void> {
@@ -35,18 +37,30 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
         }
     }, [charts]);
 
+    function onCheckboxToggle(id: number) {
+        handleChartSelectionChange(id, checkboxToggle);
+        setCheckboxToggle(!checkboxToggle);
+    }
+
     return (
         <Screen style={styles.screen}>
             <FlatList
                 data={charts}
                 keyExtractor={(chart) => chart.id.toString()}
                 renderItem={({ item }) => (
-                    <CollabsibleInfoCard
+                    <InfoCard
                         id={item.id}
                         title={item.title}
-                        subTitle={item.subtitle}
-                        whenPressed={handleChartSelectionChange}
-                    />
+                        subtitle={item.subtitle}
+                    >
+                        <View style={styles.checkboxColumn}>
+                            <Checkbox
+                                value={checkboxToggle}
+                                onValueChange={() => onCheckboxToggle(item.id)}
+                                color={colors.dark}
+                            />
+                        </View>
+                    </InfoCard>
                 )}
             />
         </Screen>
@@ -58,6 +72,10 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
+    },
+    checkboxColumn: {
+        alignItems: "center",
+        justifyContent: "center",
     },
 });
 

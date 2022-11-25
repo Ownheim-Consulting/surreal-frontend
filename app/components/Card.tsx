@@ -1,11 +1,17 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import InsetShadow from "react-native-inset-shadow";
 
 import AppText from "./AppText";
 import colors from "../config/colors";
 
-function Card({ title, subtitle, inner }) {
+interface CardProps {
+    id: number;
+    title: string;
+    subtitle: string;
+    children: any;
+}
+
+function Card({ title, subtitle, children }: CardProps) {
     return (
         <View style={styles.card}>
             <AppText
@@ -22,26 +28,23 @@ function Card({ title, subtitle, inner }) {
             >
                 {subtitle}
             </AppText>
-            <View style={styles.imageView}>
-                <InsetShadow>{inner}</InsetShadow>
-            </View>
+            {children}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     card: {
+        flex: 1,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         borderRadius: 15,
         backgroundColor: colors.lightGray,
         marginHorizontal: 20,
-        overflow: "hidden",
         padding: 10,
-        alignItems: "center",
-        justifyContent: "center",
+        overflow: "hidden",
         height: 500,
-    },
-    detailsContainer: {
-        padding: 20,
     },
     subtitle: {
         color: colors.secondary,
@@ -53,16 +56,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: colors.dark,
     },
-    imageView: {
-        borderRadius: 10,
-        overflow: "hidden",
-        // padding: 10,
-        //height: 250,
-        flex: 1,
-        width: "100%",
-        height: "80%",
-    },
-    shadow: {},
 });
 
 export default Card;
