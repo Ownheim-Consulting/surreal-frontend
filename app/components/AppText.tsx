@@ -3,7 +3,13 @@ import { Text } from "react-native";
 
 import defaultStyles from "../config/styles";
 
-function AppText({ children, style, ...otherProps }) {
+interface AppTextProps {
+    children: any;
+    style: any;
+    otherProps?: Array<any>
+}
+
+function AppText({ children, style, ...otherProps }: AppTextProps) {
     return (
         <Text style={[defaultStyles.text, style]} {...otherProps}>
             {children}
