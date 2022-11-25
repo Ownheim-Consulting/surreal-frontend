@@ -1,12 +1,12 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, TextProps } from "react-native";
 
 import defaultStyles from "../config/styles";
 
 interface AppTextProps {
     children: any;
     style: any;
-    otherProps?: Array<any>
+    otherProps?: Array<TextProps>;
 }
 
 function AppText({ children, style, ...otherProps }: AppTextProps) {
