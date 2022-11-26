@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { StyleSheet } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -13,17 +13,14 @@ import Screen from "../components/Screen";
 
 const Tab = createBottomTabNavigator();
 
-function NavigationTabs() {
+function NavigationTabs({}): ReactElement {
     const [chartSelections, setChartSelections] = useState<Array<number>>([]);
 
-    function handleChartSelectionsChange(id: number, remove: boolean): void {
-        if (!chartSelections.includes(id)) {
-            setChartSelections([...chartSelections, id]);
-            return;
-        }
-
-        if (remove) {
-            setChartSelections(chartSelections.filter((item) => item !== id));
+    function handleChartSelectionsChange(chartId: number): void {
+        if (!chartSelections.includes(chartId)) {
+            setChartSelections([...chartSelections, chartId]);
+        } else {
+            setChartSelections(chartSelections.filter((id) => id !== chartId));
         }
     }
 

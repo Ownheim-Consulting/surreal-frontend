@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import InsetShadow from "react-native-inset-shadow";
 
@@ -13,7 +13,7 @@ interface ChartScreenProps {
     chartIds: Array<number>;
 }
 
-export function ChartScreen({ chartIds }: ChartScreenProps) {
+function ChartScreen({ chartIds }: ChartScreenProps): ReactElement {
     const [charts, setCharts] = useState<Array<Model.Chart>>([]);
 
     function mapChartResponseToModel(
@@ -39,7 +39,7 @@ export function ChartScreen({ chartIds }: ChartScreenProps) {
                 let chart = mapChartResponseToModel(response!);
                 if (chart && !chartsFromApi.includes(chart)) {
                     chartsFromApi.push(chart);
-                }
+               }
             }
             setCharts(chartsFromApi);
         }
@@ -47,13 +47,13 @@ export function ChartScreen({ chartIds }: ChartScreenProps) {
         getCharts();
     }, [chartIds]);
 
+
     return (
         <Screen style={styles.screen}>
             <FlatList
                 data={charts}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => {
-                    let chart = <Chart type={item.type} obj={item} />;
                     return (
                         <Card
                             id={item.id}
@@ -61,7 +61,9 @@ export function ChartScreen({ chartIds }: ChartScreenProps) {
                             subtitle={item.subtitle}
                         >
                             <View style={styles.chartView}>
-                                <InsetShadow>{chart}</InsetShadow>
+                                <InsetShadow>
+                                    <Chart type={item.type} obj={item} />
+                                </InsetShadow>
                             </View>
                         </Card>
                     );

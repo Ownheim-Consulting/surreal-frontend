@@ -8,7 +8,7 @@ interface CardProps {
     id: number;
     title: string;
     subtitle: string;
-    children: any;
+    children?: any;
 }
 
 function Card({ title, subtitle, children }: CardProps) {

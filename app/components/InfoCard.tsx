@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { View, StyleSheet } from "react-native";
 
 import AppText from "../components/AppText";
@@ -8,12 +8,13 @@ interface InfoCardProps {
     id: number;
     title: string;
     subtitle: string;
-    children: any;
+    children?: any;
+    style?: any;
 }
 
-function InfoCard({ id, title, subtitle, children }: InfoCardProps) {
+function InfoCard({ id, title, subtitle, children, style }: InfoCardProps): ReactElement {
     return (
-        <View key={id} style={[styles.container]}>
+        <View key={id} style={[styles.container, style]}>
             <View style={[styles.textColumn]}>
                 <AppText
                     style={styles.title}

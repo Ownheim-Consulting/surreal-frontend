@@ -1,8 +1,8 @@
-import React from "react";
+import React, { ReactElement } from "react";
 
 import NavigationTabs from "./app/screens/NavigationTabs";
 
-function App() {
+function App(): ReactElement {
     return <NavigationTabs />;
 }
 

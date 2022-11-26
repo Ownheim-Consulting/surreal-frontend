@@ -9,7 +9,7 @@ import colors from "../config/colors";
 import Screen from "../components/Screen";
 
 interface ListingsScreenProps {
-    handleChartSelectionChange: (id: number, isPresent: boolean) => void;
+    handleChartSelectionChange: (id: number) => void;
 }
 
 function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
@@ -38,7 +38,7 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
     }, [charts]);
 
     function onCheckboxToggle(id: number) {
-        handleChartSelectionChange(id, checkboxToggle);
+        handleChartSelectionChange(id);
         setCheckboxToggle(!checkboxToggle);
     }
 
