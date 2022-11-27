@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import Checkbox from "expo-checkbox";
+import { SearchBar } from "@rneui/themed";
 
 import { ChartApi } from "../apis/ChartApi";
 import { Chart } from "../models/Chart";
@@ -14,7 +15,9 @@ interface ListingsScreenProps {
 
 function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
     const [charts, setCharts] = useState<Array<Chart>>();
+    const [fullCharts, setFullCharts] = useState<Array<Chart>>([]);
     const [checkboxToggle, setCheckboxToggle] = useState<boolean>(false);
+    const [search, setSearch] = useState<string>("");
 
     useEffect(() => {
         async function getCharts(): Promise<void> {
@@ -30,20 +33,40 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
             });
 
             setCharts(apiCharts);
+            setFullCharts(apiCharts);
         }
 
         if (!charts) {
             getCharts();
         }
-    }, [charts]);
+    }, []);
 
     function onCheckboxToggle(id: number) {
         handleChartSelectionChange(id);
         setCheckboxToggle(!checkboxToggle);
     }
 
+    function updateSearch(searchText: string) {
+        let newCharts = fullCharts.filter((chart) => {
+            let chartTitle = chart.title.toUpperCase();
+            let search = searchText.toUpperCase();
+            return chartTitle.indexOf(search) > -1;
+        });
+
+        setCharts(newCharts);
+        setSearch(searchText);
+    }
+
     return (
         <Screen style={styles.screen}>
+            <SearchBar
+                placeholder="Search"
+                platform={"android"}
+                containerStyle={styles.searchBarContainer}
+                inputContainerStyle={styles.searchBarInnerContainer}
+                onChangeText={updateSearch}
+                value={search}
+            />
             <FlatList
                 data={charts}
                 keyExtractor={(chart) => chart.id.toString()}
@@ -76,6 +99,13 @@ const styles = StyleSheet.create({
     checkboxColumn: {
         alignItems: "center",
         justifyContent: "center",
+    },
+    searchBarContainer: {
+        padding: 20,
+    },
+    searchBarInnerContainer: {
+        backgroundColor: colors.lightGray,
+        borderRadius: 10,
     },
 });
 

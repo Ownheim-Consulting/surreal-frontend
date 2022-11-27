@@ -12,7 +12,13 @@ interface InfoCardProps {
     style?: any;
 }
 
-function InfoCard({ id, title, subtitle, children, style }: InfoCardProps): ReactElement {
+function InfoCard({
+    id,
+    title,
+    subtitle,
+    children,
+    style,
+}: InfoCardProps): ReactElement {
     return (
         <View key={id} style={[styles.container, style]}>
             <View style={[styles.textColumn]}>

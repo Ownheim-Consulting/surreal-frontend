@@ -39,14 +39,13 @@ function ChartScreen({ chartIds }: ChartScreenProps): ReactElement {
                 let chart = mapChartResponseToModel(response!);
                 if (chart && !chartsFromApi.includes(chart)) {
                     chartsFromApi.push(chart);
-               }
+                }
             }
             setCharts(chartsFromApi);
         }
 
         getCharts();
     }, [chartIds]);
-
 
     return (
         <Screen style={styles.screen}>
