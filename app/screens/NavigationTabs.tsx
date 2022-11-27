@@ -1,11 +1,13 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import ChartScreen from "../screens/ChartScreen";
+import { defaultStyles } from "../config/styles";
 import colors from "../config/colors";
 import HomeScreen from "../screens/HomeScreen";
 import ListingsScreen from "../screens/ListingsScreen";
@@ -15,6 +17,35 @@ const Tab = createBottomTabNavigator();
 
 function NavigationTabs({}): ReactElement {
     const [chartSelections, setChartSelections] = useState<Array<number>>([]);
+    const [recentCharts, setRecentCharts] = useState<Array<number>>([]);
+
+    useEffect(() => {
+        async function updateRecentCharts(): Promise<void> {
+            try {
+                let storedRecentCharts = await AsyncStorage.getItem("@recent-charts");
+                if (storedRecentCharts === null) {
+                    return;
+                }
+
+                let storedRecentChartsJson: Array<number> = JSON.parse(storedRecentCharts);
+                recentCharts.forEach((id) => {
+                    if (!storedRecentChartsJson.includes(id)) {
+                        storedRecentChartsJson.push(id);
+                    }
+                });
+
+                // Only want to have maximum recent chart list length of 7
+                while (storedRecentChartsJson.length > 7) {
+                    storedRecentChartsJson.shift();
+                }
+                await AsyncStorage.setItem("@recent-charts", JSON.stringify(storedRecentChartsJson));
+            } catch (e) {
+                console.error("Could not set recent charts in store: " + e);
+            }
+        };
+
+        updateRecentCharts();
+    }, [recentCharts]);
 
     function handleChartSelectionsChange(chartId: number): void {
         if (!chartSelections.includes(chartId)) {
@@ -22,10 +53,14 @@ function NavigationTabs({}): ReactElement {
         } else {
             setChartSelections(chartSelections.filter((id) => id !== chartId));
         }
+
+        if (!recentCharts.includes(chartId)) {
+            setRecentCharts([...recentCharts, chartId]);
+        }
     }
 
     return (
-        <Screen style={styles.screen}>
+        <Screen style={[defaultStyles.screen, styles.screen]}>
             <NavigationContainer theme={defaultTheme}>
                 <Tab.Navigator screenOptions={{ tabBarShowLabel: false }}>
                     <Tab.Screen
@@ -47,6 +82,20 @@ function NavigationTabs({}): ReactElement {
                                 }
                             />
                         )}
+                    </Tab.Screen>
+                    <Tab.Screen
+                        name="Home"
+                        options={{
+                            tabBarIcon: (tabInfo) => (
+                                <MaterialCommunityIcons
+                                    name="home"
+                                    size={30}
+                                    color={tabInfo.color}
+                                />
+                            ),
+                        }}
+                    >
+                        {() => <HomeScreen />}
                     </Tab.Screen>
                     <Tab.Screen
                         name="Charts"

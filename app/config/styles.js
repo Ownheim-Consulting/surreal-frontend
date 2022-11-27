@@ -12,6 +12,5 @@ export const defaultStyles = StyleSheet.create({
     },
     screen: {
         paddingTop: Constants.statusBarHeight,
-        flex: 1,
     },
 });

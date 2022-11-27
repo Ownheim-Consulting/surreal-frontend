@@ -7,7 +7,7 @@ import colors from "../config/colors";
 interface CardProps {
     id: number;
     title: string;
-    subtitle: string;
+    subtitle?: string;
     children?: any;
 }
 
@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         backgroundColor: colors.lightGray,
         marginHorizontal: 20,
-        padding: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
         overflow: "hidden",
         height: 500,
     },

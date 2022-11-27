@@ -7,7 +7,7 @@ import colors from "../config/colors";
 interface InfoCardProps {
     id: number;
     title: string;
-    subtitle: string;
+    subtitle?: string;
     children?: any;
     style?: any;
 }

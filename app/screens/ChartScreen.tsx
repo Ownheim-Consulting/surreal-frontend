@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
+        paddingTop: 15,
     },
     chartView: {
         borderRadius: 10,

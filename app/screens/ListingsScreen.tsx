@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { SearchBar } from "@rneui/themed";
 
 import { ChartApi } from "../apis/ChartApi";
-import { Chart } from "../models/Chart";
-import InfoCard from "../components/InfoCard";
+import { Chart as ChartModel } from "../models/Chart";
 import colors from "../config/colors";
+import InfoCard from "../components/InfoCard";
 import Screen from "../components/Screen";
 
 interface ListingsScreenProps {
     handleChartSelectionChange: (id: number) => void;
 }
 
-function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
-    const [charts, setCharts] = useState<Array<Chart>>();
-    const [fullCharts, setFullCharts] = useState<Array<Chart>>([]);
+function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps): ReactElement {
+    const [charts, setCharts] = useState<Array<ChartModel>>();
+    const [fullCharts, setFullCharts] = useState<Array<ChartModel>>([]);
     const [checkboxToggle, setCheckboxToggle] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
 
@@ -29,7 +29,7 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
             }
 
             apiCharts.forEach((chart) => {
-                chart = Chart.mapResponse(chart);
+                chart = ChartModel.mapResponse(chart);
             });
 
             setCharts(apiCharts);
@@ -41,12 +41,12 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps) {
         }
     }, []);
 
-    function onCheckboxToggle(id: number) {
+    function onCheckboxToggle(id: number): void {
         handleChartSelectionChange(id);
         setCheckboxToggle(!checkboxToggle);
     }
 
-    function updateSearch(searchText: string) {
+    function updateSearch(searchText: string): void {
         let newCharts = fullCharts.filter((chart) => {
             let chartTitle = chart.title.toUpperCase();
             let search = searchText.toUpperCase();
@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
+        paddingTop: 15,
     },
     checkboxColumn: {
         alignItems: "center",
