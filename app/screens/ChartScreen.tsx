@@ -8,12 +8,13 @@ import { ChartApi } from "../apis/ChartApi";
 import * as Model from "../models/Chart";
 import colors from "../config/colors";
 import Screen from "../components/Screen";
+import { ChartSelection } from "../models/ChartSelection";
 
 interface ChartScreenProps {
-    chartIds: Array<number>;
+    selectedCharts: Array<ChartSelection>;
 }
 
-function ChartScreen({ chartIds }: ChartScreenProps): ReactElement {
+function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
     const [charts, setCharts] = useState<Array<Model.Chart>>([]);
 
     function mapChartResponseToModel(
@@ -33,8 +34,8 @@ function ChartScreen({ chartIds }: ChartScreenProps): ReactElement {
     useEffect(() => {
         async function getCharts(): Promise<void> {
             let chartsFromApi: Array<Model.Chart> = [];
-            for await (const chartId of chartIds) {
-                let response: Model.Chart | undefined = await ChartApi.getChart(chartId);
+            for await (const chartSelection of selectedCharts) {
+                let response: Model.Chart | undefined = await ChartApi.getChart(chartSelection.id);
                 if (response !== undefined) {
                     let chart = mapChartResponseToModel(response!);
                     if (chart && !chartsFromApi.includes(chart)) {
@@ -46,7 +47,7 @@ function ChartScreen({ chartIds }: ChartScreenProps): ReactElement {
         }
 
         getCharts();
-    }, [chartIds]);
+    }, [selectedCharts]);
 
     return (
         <Screen style={styles.screen}>

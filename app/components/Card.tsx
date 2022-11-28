@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: 5,
-        align: "center",
+        textAlign: "center",
         fontWeight: "bold",
         color: colors.dark,
     },

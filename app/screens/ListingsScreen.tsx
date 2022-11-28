@@ -5,21 +5,24 @@ import { SearchBar } from "@rneui/themed";
 
 import { ChartApi } from "../apis/ChartApi";
 import { Chart as ChartModel } from "../models/Chart";
+import { ChartSelection } from "../models/ChartSelection";
 import colors from "../config/colors";
 import InfoCard from "../components/InfoCard";
 import Screen from "../components/Screen";
 
 interface ListingsScreenProps {
-    handleChartSelectionChange: (id: number) => void;
+    selectedCharts: Array<ChartSelection>;
+    handleChartSelectionChange: (chartSelection: ChartSelection) => void;
 }
 
-function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps): ReactElement {
+function ListingsScreen({ selectedCharts, handleChartSelectionChange }: ListingsScreenProps): ReactElement {
     const [charts, setCharts] = useState<Array<ChartModel>>();
     const [fullCharts, setFullCharts] = useState<Array<ChartModel>>([]);
-    const [checkboxToggle, setCheckboxToggle] = useState<boolean>(false);
+    const [checked, setChecked] = useState<Array<number>>([]);
     const [search, setSearch] = useState<string>("");
 
     useEffect(() => {
+        // Get a list of all of the available charts from the ChartApi
         async function getCharts(): Promise<void> {
             let apiCharts: Array<ChartModel> | undefined = await ChartApi.getCharts();
             if (apiCharts === undefined) {
@@ -40,9 +43,31 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps): Re
         }
     }, []);
 
+    useEffect(() => {
+        // Update the recent charts list with the correct checkbox status
+        // even if user checked chart in home screen
+        async function updateSelectedCharts(): Promise<void> {
+            let newChecked = new Array<number>();
+            selectedCharts.forEach((chartSelection) => {
+                newChecked.push(chartSelection.id);
+            })
+            setChecked(newChecked);
+        }
+
+        updateSelectedCharts();
+    }, [selectedCharts]);
+
     function onCheckboxToggle(id: number): void {
-        handleChartSelectionChange(id);
-        setCheckboxToggle(!checkboxToggle);
+        let cpyChecked = [...checked];
+        if (!cpyChecked.includes(id)) {
+            cpyChecked.push(id);
+        } else {
+            cpyChecked = cpyChecked.filter((elementId) => elementId !== id);
+        }
+        setChecked(cpyChecked);
+
+        let c = new ChartSelection(id, cpyChecked.includes(id));
+        handleChartSelectionChange(c);
     }
 
     function updateSearch(searchText: string): void {
@@ -78,7 +103,7 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps): Re
                         >
                             <View style={styles.checkboxColumn}>
                                 <Checkbox
-                                    value={checkboxToggle}
+                                    value={checked.includes(item.id)}
                                     onValueChange={() => onCheckboxToggle(item.id)}
                                     color={colors.dark}
                                 />

@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ChartScreen from "../screens/ChartScreen";
+import { ChartSelection } from "../models/ChartSelection";
 import { defaultStyles } from "../config/styles";
 import colors from "../config/colors";
 import HomeScreen from "../screens/HomeScreen";
@@ -16,30 +17,36 @@ import Screen from "../components/Screen";
 const Tab = createBottomTabNavigator();
 
 function NavigationTabs({}): ReactElement {
-    const [chartSelections, setChartSelections] = useState<Array<number>>([]);
-    const [recentCharts, setRecentCharts] = useState<Array<number>>([]);
+    const [chartSelections, setChartSelections] = useState<Array<ChartSelection>>([]);
+    const [recentCharts, setRecentCharts] = useState<Array<ChartSelection>>([]);
 
     useEffect(() => {
         async function updateRecentCharts(): Promise<void> {
             try {
+                // Get storedRecentCharts from store and init storedRecentChartsJson
+                // based on if we got anything from store or not
                 let storedRecentCharts: string | null = await AsyncStorage.getItem("@recent-charts");
-
-                let storedRecentChartsJson: Array<number>;
+                let storedRecentChartsJson: Array<ChartSelection>;
                 if (storedRecentCharts !== null) {
                     storedRecentChartsJson = JSON.parse(storedRecentCharts);
                 } else {
-                    storedRecentChartsJson = new Array<number>();
+                    storedRecentChartsJson = new Array<ChartSelection>();
                 }
-                storedRecentChartsJson = storedRecentChartsJson.reduce((acc: Array<number>, cur: number) => {
-                    if (!acc.includes(cur)) {
+
+                // Remove duplicates in storedRecentChartsJson
+                storedRecentChartsJson = storedRecentChartsJson.reduce((acc: Array<ChartSelection>, cur: ChartSelection) => {
+                    if (!acc.some((element) => element.id === cur.id)) {
                         acc.push(cur);
                     }
                     return acc;
                 }, []);
 
-                recentCharts.forEach((id) => {
-                    if (!storedRecentChartsJson.includes(id)) {
-                        storedRecentChartsJson.push(id);
+                // Add any missing charts in recentCharts to storedRecentChartsJson
+                recentCharts.forEach((chart) => {
+                    if (storedRecentChartsJson.some((element) => element.id === chart.id)) {
+                        storedRecentChartsJson = storedRecentChartsJson.map(element => element.id === chart.id ? {...element, selected: chart.selected} : element)
+                    } else {
+                        storedRecentChartsJson.push(chart);
                     }
                 });
 
@@ -56,16 +63,22 @@ function NavigationTabs({}): ReactElement {
         updateRecentCharts();
     }, [recentCharts]);
 
-    function handleChartSelectionsChange(chartId: number): void {
-        if (!chartSelections.includes(chartId)) {
-            setChartSelections([...chartSelections, chartId]);
+    function handleChartSelectionsChange(chartSelection: ChartSelection): void {
+        let cpyChartSelections = [...chartSelections];
+        if (!cpyChartSelections.some((element) => element.id === chartSelection.id) && chartSelection.selected) {
+            cpyChartSelections.push(chartSelection)
         } else {
-            setChartSelections(chartSelections.filter((id) => id !== chartId));
+            cpyChartSelections = cpyChartSelections.filter((element) => element.id !== chartSelection.id);
         }
+        setChartSelections(cpyChartSelections);
 
-        if (!recentCharts.includes(chartId)) {
-            setRecentCharts([...recentCharts, chartId]);
+        let cpyRecentCharts = [...recentCharts]
+        if (cpyRecentCharts.some((element) => element.id === chartSelection.id)) {
+            cpyRecentCharts = cpyRecentCharts.map(element => element.id === chartSelection.id ? {...element, selected: chartSelection.selected} : element)
+        } else {
+            cpyRecentCharts.push(chartSelection);
         }
+        setRecentCharts(cpyRecentCharts);
     }
 
     return (
@@ -86,6 +99,7 @@ function NavigationTabs({}): ReactElement {
                     >
                         {() => (
                             <ListingsScreen
+                                selectedCharts={chartSelections}
                                 handleChartSelectionChange={
                                     handleChartSelectionsChange
                                 }
@@ -104,7 +118,7 @@ function NavigationTabs({}): ReactElement {
                             ),
                         }}
                     >
-                        {() => <HomeScreen />}
+                        {() => <HomeScreen selectedCharts={chartSelections} handleChartSelectionChange={handleChartSelectionsChange} />}
                     </Tab.Screen>
                     <Tab.Screen
                         name="Charts"
@@ -118,7 +132,7 @@ function NavigationTabs({}): ReactElement {
                             ),
                         }}
                     >
-                        {() => <ChartScreen chartIds={chartSelections} />}
+                        {() => <ChartScreen selectedCharts={chartSelections} />}
                     </Tab.Screen>
                 </Tab.Navigator>
             </NavigationContainer>
