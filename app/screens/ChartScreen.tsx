@@ -55,17 +55,19 @@ function ChartScreen({ chartIds }: ChartScreenProps): ReactElement {
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item }) => {
                     return (
-                        <Card
-                            id={item.id}
-                            title={item.title}
-                            subtitle={item.subtitle}
-                        >
-                            <View style={styles.chartView}>
-                                <InsetShadow>
-                                    <Chart type={item.type} obj={item} />
-                                </InsetShadow>
-                            </View>
-                        </Card>
+                        <View style={styles.listView}>
+                            <Card
+                                id={item.id}
+                                title={item.title}
+                                subtitle={item.subtitle}
+                            >
+                                <View style={styles.chartView}>
+                                    <InsetShadow>
+                                        <Chart type={item.type} obj={item} />
+                                    </InsetShadow>
+                                </View>
+                            </Card>
+                        </View>
                     );
                 }}
             />
@@ -86,6 +88,9 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "80%",
     },
+    listView: {
+        marginBottom: 15,
+    }
 });
 
 export default ChartScreen;
