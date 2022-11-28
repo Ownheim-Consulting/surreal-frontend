@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import AppText from "../components/AppText";
@@ -32,15 +32,17 @@ function HomeScreen(): ReactElement {
     useEffect(() => {
         // Fetch recent charts from API using recent chart ids
         async function getRecentChartsFromApi(): Promise<void> {
-            let chartsFromApi: Array<ChartModel> = [];
+            let chartsFromApi: Array<ChartModel> = new Array<ChartModel>();
             for await (const chartId of recentChartIds) {
-                let response: ChartModel = await ChartApi.getChart(chartId);
-
-                let chart = ChartModel.mapResponse(response);
-                if (chart && !chartsFromApi.includes(chart)) {
-                    chartsFromApi.push(chart);
+                let response: ChartModel | undefined = await ChartApi.getChart(chartId);
+                if (response !== undefined) {
+                    let chart = ChartModel.mapResponse(response);
+                    if (chart && !chartsFromApi.includes(chart)) {
+                        chartsFromApi.push(chart);
+                    }
                 }
             }
+
             setRecentCharts(chartsFromApi);
         }
 
@@ -54,11 +56,13 @@ function HomeScreen(): ReactElement {
                 data={recentCharts}
                 keyExtractor={(chart) => chart.id.toString()}
                 renderItem={({ item }) => (
-                    <InfoCard
-                        id={item.id}
-                        title={item.title}
-                        subtitle={item.subtitle}
-                    />
+                    <View style={styles.listView}>
+                        <InfoCard
+                            id={item.id}
+                            title={item.title}
+                            subtitle={item.subtitle}
+                        />
+                    </View>
                 )}
             />
         </Screen>
@@ -76,6 +80,9 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         fontWeight: "bold",
     },
+    listView: {
+        marginBottom: 15,
+    }
 });
 
 export default HomeScreen;

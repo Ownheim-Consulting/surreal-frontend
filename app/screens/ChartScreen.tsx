@@ -34,11 +34,12 @@ function ChartScreen({ chartIds }: ChartScreenProps): ReactElement {
         async function getCharts(): Promise<void> {
             let chartsFromApi: Array<Model.Chart> = [];
             for await (const chartId of chartIds) {
-                let response: Model.Chart = await ChartApi.getChart(chartId);
-
-                let chart = mapChartResponseToModel(response!);
-                if (chart && !chartsFromApi.includes(chart)) {
-                    chartsFromApi.push(chart);
+                let response: Model.Chart | undefined = await ChartApi.getChart(chartId);
+                if (response !== undefined) {
+                    let chart = mapChartResponseToModel(response!);
+                    if (chart && !chartsFromApi.includes(chart)) {
+                        chartsFromApi.push(chart);
+                    }
                 }
             }
             setCharts(chartsFromApi);

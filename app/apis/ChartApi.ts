@@ -7,9 +7,14 @@ const instance = axios.create({
     timeout: 10000,
 });
 
-const processResponse = (response: AxiosResponse) => response.data;
+const processResponse = (response: AxiosResponse) => {
+    return response.data;
+};
 
-const handleError = (error: AxiosError) => console.error(error);
+const handleError = (error: AxiosError) => {
+    console.error(error);
+    return undefined;
+};
 
 const requests = {
     get: (url: string) =>
@@ -17,8 +22,8 @@ const requests = {
 };
 
 export const ChartApi = {
-    getCharts: (): Promise<Array<Chart>> =>
+    getCharts: (): Promise<Array<Chart> | undefined> =>
         requests.get("/api/v1/chart-service/charts"),
-    getChart: (id: number): Promise<Chart> =>
+    getChart: (id: number): Promise<Chart | undefined> =>
         requests.get(`/api/v1/chart-service/chart/${id}`),
 };

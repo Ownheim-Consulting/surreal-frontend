@@ -21,9 +21,8 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps): Re
 
     useEffect(() => {
         async function getCharts(): Promise<void> {
-            let apiCharts = await ChartApi.getCharts();
-
-            if (!apiCharts) {
+            let apiCharts: Array<ChartModel> | undefined = await ChartApi.getCharts();
+            if (apiCharts === undefined) {
                 console.error("Did not recieve any charts from API");
                 return;
             }
@@ -71,19 +70,21 @@ function ListingsScreen({ handleChartSelectionChange }: ListingsScreenProps): Re
                 data={charts}
                 keyExtractor={(chart) => chart.id.toString()}
                 renderItem={({ item }) => (
-                    <InfoCard
-                        id={item.id}
-                        title={item.title}
-                        subtitle={item.subtitle}
-                    >
-                        <View style={styles.checkboxColumn}>
-                            <Checkbox
-                                value={checkboxToggle}
-                                onValueChange={() => onCheckboxToggle(item.id)}
-                                color={colors.dark}
-                            />
-                        </View>
-                    </InfoCard>
+                    <View style={styles.listView}>
+                        <InfoCard
+                            id={item.id}
+                            title={item.title}
+                            subtitle={item.subtitle}
+                        >
+                            <View style={styles.checkboxColumn}>
+                                <Checkbox
+                                    value={checkboxToggle}
+                                    onValueChange={() => onCheckboxToggle(item.id)}
+                                    color={colors.dark}
+                                />
+                            </View>
+                        </InfoCard>
+                    </View>
                 )}
             />
         </Screen>
@@ -108,6 +109,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.lightGray,
         borderRadius: 10,
     },
+    listView: {
+        marginBottom: 15,
+    }
 });
 
 export default ListingsScreen;

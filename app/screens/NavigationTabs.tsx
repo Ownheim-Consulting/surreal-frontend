@@ -22,12 +22,21 @@ function NavigationTabs({}): ReactElement {
     useEffect(() => {
         async function updateRecentCharts(): Promise<void> {
             try {
-                let storedRecentCharts = await AsyncStorage.getItem("@recent-charts");
-                if (storedRecentCharts === null) {
-                    return;
-                }
+                let storedRecentCharts: string | null = await AsyncStorage.getItem("@recent-charts");
 
-                let storedRecentChartsJson: Array<number> = JSON.parse(storedRecentCharts);
+                let storedRecentChartsJson: Array<number>;
+                if (storedRecentCharts !== null) {
+                    storedRecentChartsJson = JSON.parse(storedRecentCharts);
+                } else {
+                    storedRecentChartsJson = new Array<number>();
+                }
+                storedRecentChartsJson = storedRecentChartsJson.reduce((acc: Array<number>, cur: number) => {
+                    if (!acc.includes(cur)) {
+                        acc.push(cur);
+                    }
+                    return acc;
+                }, []);
+
                 recentCharts.forEach((id) => {
                     if (!storedRecentChartsJson.includes(id)) {
                         storedRecentChartsJson.push(id);
