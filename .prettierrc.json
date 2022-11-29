@@ -1,0 +1,10 @@
+{
+    "printWidth": 100,
+    "semi": true,
+    "singleQuote": false,
+    "tabWidth": 4,
+    "endOfLine": "lf",
+    "importOrder": [".components/(.*)$", ".models/(.*)$", ".screens/(.*)$", "^[./]"],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
+}
