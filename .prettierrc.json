@@ -3,7 +3,12 @@
     "singleQuote": false,
     "tabWidth": 4,
     "endOfLine": "lf",
-    "importOrder": [".components/(.*)$", ".models/(.*)$", ".screens/(.*)$", "^[./]" ],
+    "importOrder": [
+        ".components/(.*)$",
+        ".models/(.*)$",
+        ".screens/(.*)$",
+        "^[./]"
+    ],
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true
 }

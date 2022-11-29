@@ -1,4 +1,3 @@
-
 export class ChartSelection {
     id: number;
     selected: boolean;

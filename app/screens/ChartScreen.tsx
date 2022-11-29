@@ -4,11 +4,13 @@ import InsetShadow from "react-native-inset-shadow";
 
 import Card from "../components/Card";
 import { Chart } from "../components/Chart";
-import { ChartApi } from "../apis/ChartApi";
-import * as Model from "../models/Chart";
-import colors from "../config/colors";
 import Screen from "../components/Screen";
+
+import * as Model from "../models/Chart";
 import { ChartSelection } from "../models/ChartSelection";
+
+import { ChartApi } from "../apis/ChartApi";
+import colors from "../config/colors";
 
 interface ChartScreenProps {
     selectedCharts: Array<ChartSelection>;
@@ -35,7 +37,9 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
         async function getCharts(): Promise<void> {
             let chartsFromApi: Array<Model.Chart> = [];
             for await (const chartSelection of selectedCharts) {
-                let response: Model.Chart | undefined = await ChartApi.getChart(chartSelection.id);
+                let response: Model.Chart | undefined = await ChartApi.getChart(
+                    chartSelection.id
+                );
                 if (response !== undefined) {
                     let chart = mapChartResponseToModel(response!);
                     if (chart && !chartsFromApi.includes(chart)) {
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
     },
     listView: {
         marginBottom: 15,
-    }
+    },
 });
 
 export default ChartScreen;

@@ -1,19 +1,19 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
-    View,
-    StyleSheet,
-    TouchableWithoutFeedback,
-    Modal,
     Button,
     FlatList,
+    Modal,
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import AppText from "./AppText";
-import Screen from "./Screen";
-import defaultStyles from "../config/styles";
-import PickerItem from "./PickerItem";
 import colors from "../config/colors";
+import defaultStyles from "../config/styles";
+import AppText from "./AppText";
+import PickerItem from "./PickerItem";
+import Screen from "./Screen";
 
 function AppPicker({
     icon,

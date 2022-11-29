@@ -1,23 +1,30 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Checkbox from "expo-checkbox";
+import React, { ReactElement, useEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 
 import AppText from "../components/AppText";
-import { Chart as ChartModel } from "../models/Chart";
-import { ChartApi } from "../apis/ChartApi";
-import { ChartSelection } from "../models/ChartSelection";
-import colors from "../config/colors";
 import InfoCard from "../components/InfoCard";
 import Screen from "../components/Screen";
+
+import { Chart as ChartModel } from "../models/Chart";
+import { ChartSelection } from "../models/ChartSelection";
+
+import { ChartApi } from "../apis/ChartApi";
+import colors from "../config/colors";
 
 interface HomeScreenProps {
     selectedCharts: Array<ChartSelection>;
     handleChartSelectionChange: (chartSelection: ChartSelection) => void;
 }
 
-function HomeScreen({ selectedCharts, handleChartSelectionChange }: HomeScreenProps): ReactElement {
-    const [recentChartSelections, setRecentChartSelections] = useState<Array<ChartSelection>>([]);
+function HomeScreen({
+    selectedCharts,
+    handleChartSelectionChange,
+}: HomeScreenProps): ReactElement {
+    const [recentChartSelections, setRecentChartSelections] = useState<
+        Array<ChartSelection>
+    >([]);
     const [recentCharts, setRecentCharts] = useState<Array<ChartModel>>([]);
     const [checked, setChecked] = useState<Array<number>>([]);
 
@@ -25,18 +32,22 @@ function HomeScreen({ selectedCharts, handleChartSelectionChange }: HomeScreenPr
         // Get recent chart ids from AsyncStorage
         async function getRecentCharts(): Promise<void> {
             try {
-                let recentChartSelections: string | null = await AsyncStorage.getItem("@recent-charts");
+                let recentChartSelections: string | null =
+                    await AsyncStorage.getItem("@recent-charts");
                 if (recentChartSelections !== null) {
-                    let jsonRecentChartSelections: Array<ChartSelection> = JSON.parse(recentChartSelections);
+                    let jsonRecentChartSelections: Array<ChartSelection> =
+                        JSON.parse(recentChartSelections);
                     // Default all of the selections from AsyncStorage to false
                     // so that the charts don't start off checked
                     jsonRecentChartSelections.forEach((selection) => {
                         selection.selected = false;
-                    })
+                    });
                     setRecentChartSelections(jsonRecentChartSelections);
                 }
             } catch (e) {
-                console.error("Could not retrieve recent charts from store: " + e);
+                console.error(
+                    "Could not retrieve recent charts from store: " + e
+                );
             }
         }
 
@@ -48,7 +59,9 @@ function HomeScreen({ selectedCharts, handleChartSelectionChange }: HomeScreenPr
         async function getRecentChartsFromApi(): Promise<void> {
             let chartsFromApi: Array<ChartModel> = new Array<ChartModel>();
             for await (const chartSelection of recentChartSelections) {
-                let response: ChartModel | undefined = await ChartApi.getChart(chartSelection.id);
+                let response: ChartModel | undefined = await ChartApi.getChart(
+                    chartSelection.id
+                );
                 if (response !== undefined) {
                     let chart = ChartModel.mapResponse(response);
                     if (chart && !chartsFromApi.includes(chart)) {
@@ -70,7 +83,7 @@ function HomeScreen({ selectedCharts, handleChartSelectionChange }: HomeScreenPr
             let newChecked = new Array<number>();
             selectedCharts.forEach((chartSelection) => {
                 newChecked.push(chartSelection.id);
-            })
+            });
             setChecked(newChecked);
         }
 
@@ -107,7 +120,9 @@ function HomeScreen({ selectedCharts, handleChartSelectionChange }: HomeScreenPr
                             <View style={styles.checkboxColumn}>
                                 <Checkbox
                                     value={checked.includes(item.id)}
-                                    onValueChange={() => onCheckboxToggle(item.id)}
+                                    onValueChange={() =>
+                                        onCheckboxToggle(item.id)
+                                    }
                                     color={colors.dark}
                                 />
                             </View>

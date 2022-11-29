@@ -1,6 +1,6 @@
-import React, { ReactElement, useEffect, useState } from "react";
 import { SearchBar } from "@rneui/themed";
 import Checkbox from "expo-checkbox";
+import React, { ReactElement, useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 
 import InfoCard from "../components/InfoCard";

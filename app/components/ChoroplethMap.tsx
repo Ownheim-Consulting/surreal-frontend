@@ -1,9 +1,9 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
-
 import * as d3 from "d3";
-import * as Model from "../models/Chart";
+import React, { ReactElement, useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import Plotly from "react-native-plotly";
+
+import * as Model from "../models/Chart";
 
 type d3Csv = d3.DSVRowArray<string>;
 
