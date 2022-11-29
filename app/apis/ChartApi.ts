@@ -17,8 +17,7 @@ const handleError = (error: AxiosError) => {
 };
 
 const requests = {
-    get: (url: string) =>
-        instance.get<Chart>(url).then(processResponse).catch(handleError),
+    get: (url: string) => instance.get<Chart>(url).then(processResponse).catch(handleError),
 };
 
 export const ChartApi = {

@@ -60,15 +60,7 @@ export function ChoroplethMap(choroplethMapModel: Model.ChoroplethMap) {
                 responsive: false,
             };
 
-            setChart(
-                <Plotly
-                    data={data}
-                    layout={layout}
-                    config={config}
-                    enableFullPlotly
-                    debug
-                />
-            );
+            setChart(<Plotly data={data} layout={layout} config={config} enableFullPlotly debug />);
         }
 
         // Handle initial load of component when chart is undefined

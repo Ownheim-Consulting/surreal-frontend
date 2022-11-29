@@ -19,9 +19,7 @@ import { defaultStyles } from "../config/styles";
 const Tab = createBottomTabNavigator();
 
 function NavigationTabs({}): ReactElement {
-    const [chartSelections, setChartSelections] = useState<
-        Array<ChartSelection>
-    >([]);
+    const [chartSelections, setChartSelections] = useState<Array<ChartSelection>>([]);
     const [recentCharts, setRecentCharts] = useState<Array<ChartSelection>>([]);
 
     useEffect(() => {
@@ -29,8 +27,9 @@ function NavigationTabs({}): ReactElement {
             try {
                 // Get storedRecentCharts from store and init storedRecentChartsJson
                 // based on if we got anything from store or not
-                let storedRecentCharts: string | null =
-                    await AsyncStorage.getItem("@recent-charts");
+                let storedRecentCharts: string | null = await AsyncStorage.getItem(
+                    "@recent-charts"
+                );
                 let storedRecentChartsJson: Array<ChartSelection>;
                 if (storedRecentCharts !== null) {
                     storedRecentChartsJson = JSON.parse(storedRecentCharts);
@@ -50,16 +49,11 @@ function NavigationTabs({}): ReactElement {
 
                 // Add any missing charts in recentCharts to storedRecentChartsJson
                 recentCharts.forEach((chart) => {
-                    if (
-                        storedRecentChartsJson.some(
-                            (element) => element.id === chart.id
-                        )
-                    ) {
-                        storedRecentChartsJson = storedRecentChartsJson.map(
-                            (element) =>
-                                element.id === chart.id
-                                    ? { ...element, selected: chart.selected }
-                                    : element
+                    if (storedRecentChartsJson.some((element) => element.id === chart.id)) {
+                        storedRecentChartsJson = storedRecentChartsJson.map((element) =>
+                            element.id === chart.id
+                                ? { ...element, selected: chart.selected }
+                                : element
                         );
                     } else {
                         storedRecentChartsJson.push(chart);
@@ -85,9 +79,7 @@ function NavigationTabs({}): ReactElement {
     function handleChartSelectionsChange(chartSelection: ChartSelection): void {
         let cpyChartSelections = [...chartSelections];
         if (
-            !cpyChartSelections.some(
-                (element) => element.id === chartSelection.id
-            ) &&
+            !cpyChartSelections.some((element) => element.id === chartSelection.id) &&
             chartSelection.selected
         ) {
             cpyChartSelections.push(chartSelection);
@@ -99,9 +91,7 @@ function NavigationTabs({}): ReactElement {
         setChartSelections(cpyChartSelections);
 
         let cpyRecentCharts = [...recentCharts];
-        if (
-            cpyRecentCharts.some((element) => element.id === chartSelection.id)
-        ) {
+        if (cpyRecentCharts.some((element) => element.id === chartSelection.id)) {
             cpyRecentCharts = cpyRecentCharts.map((element) =>
                 element.id === chartSelection.id
                     ? { ...element, selected: chartSelection.selected }
@@ -116,10 +106,7 @@ function NavigationTabs({}): ReactElement {
     return (
         <Screen style={[defaultStyles.screen, styles.screen]}>
             <NavigationContainer theme={defaultTheme}>
-                <Tab.Navigator
-                    screenOptions={{ tabBarShowLabel: false }}
-                    initialRouteName="Home"
-                >
+                <Tab.Navigator screenOptions={{ tabBarShowLabel: false }} initialRouteName="Home">
                     <Tab.Screen
                         name="Select Data"
                         options={{
@@ -135,9 +122,7 @@ function NavigationTabs({}): ReactElement {
                         {() => (
                             <ListingsScreen
                                 selectedCharts={chartSelections}
-                                handleChartSelectionChange={
-                                    handleChartSelectionsChange
-                                }
+                                handleChartSelectionChange={handleChartSelectionsChange}
                             />
                         )}
                     </Tab.Screen>
@@ -156,9 +141,7 @@ function NavigationTabs({}): ReactElement {
                         {() => (
                             <HomeScreen
                                 selectedCharts={chartSelections}
-                                handleChartSelectionChange={
-                                    handleChartSelectionsChange
-                                }
+                                handleChartSelectionChange={handleChartSelectionsChange}
                             />
                         )}
                     </Tab.Screen>

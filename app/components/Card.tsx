@@ -14,18 +14,10 @@ interface CardProps {
 function Card({ title, subtitle, children }: CardProps) {
     return (
         <View style={styles.card}>
-            <AppText
-                style={styles.title}
-                numberOfLines={1}
-                adjustsFontSizeToFit={true}
-            >
+            <AppText style={styles.title} numberOfLines={1} adjustsFontSizeToFit={true}>
                 {title}
             </AppText>
-            <AppText
-                style={styles.subtitle}
-                numberOfLines={2}
-                adjustsFontSizeToFit={true}
-            >
+            <AppText style={styles.subtitle} numberOfLines={2} adjustsFontSizeToFit={true}>
                 {subtitle}
             </AppText>
             {children}

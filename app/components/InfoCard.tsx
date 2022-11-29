@@ -13,28 +13,14 @@ interface InfoCardProps {
     style?: any;
 }
 
-function InfoCard({
-    id,
-    title,
-    subtitle,
-    children,
-    style,
-}: InfoCardProps): ReactElement {
+function InfoCard({ id, title, subtitle, children, style }: InfoCardProps): ReactElement {
     return (
         <View key={id} style={[styles.container, style]}>
             <View style={[styles.textColumn]}>
-                <AppText
-                    style={styles.title}
-                    numberOfLines={1}
-                    adjustsFontSizeToFit={true}
-                >
+                <AppText style={styles.title} numberOfLines={1} adjustsFontSizeToFit={true}>
                     {title}
                 </AppText>
-                <AppText
-                    style={styles.subtitle}
-                    numberOfLines={2}
-                    adjustsFontSizeToFit={true}
-                >
+                <AppText style={styles.subtitle} numberOfLines={2} adjustsFontSizeToFit={true}>
                     {subtitle}
                 </AppText>
             </View>

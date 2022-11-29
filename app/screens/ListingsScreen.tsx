@@ -29,8 +29,7 @@ function ListingsScreen({
     useEffect(() => {
         // Get a list of all of the available charts from the ChartApi
         async function getCharts(): Promise<void> {
-            let apiCharts: Array<ChartModel> | undefined =
-                await ChartApi.getCharts();
+            let apiCharts: Array<ChartModel> | undefined = await ChartApi.getCharts();
             if (apiCharts === undefined) {
                 console.error("Did not recieve any charts from API");
                 return;
@@ -102,17 +101,11 @@ function ListingsScreen({
                 keyExtractor={(chart) => chart.id.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.listView}>
-                        <InfoCard
-                            id={item.id}
-                            title={item.title}
-                            subtitle={item.subtitle}
-                        >
+                        <InfoCard id={item.id} title={item.title} subtitle={item.subtitle}>
                             <View style={styles.checkboxColumn}>
                                 <Checkbox
                                     value={checked.includes(item.id)}
-                                    onValueChange={() =>
-                                        onCheckboxToggle(item.id)
-                                    }
+                                    onValueChange={() => onCheckboxToggle(item.id)}
                                     color={colors.dark}
                                 />
                             </View>

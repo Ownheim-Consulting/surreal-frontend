@@ -76,16 +76,7 @@ export class ChoroplethMap extends MapChart {
         zDataUri: string,
         zDataFormat: string
     ) {
-        super(
-            id,
-            title,
-            subtitle,
-            type,
-            legendTitle,
-            datasetName,
-            viewingAreaName,
-            datasetLevel
-        );
+        super(id, title, subtitle, type, legendTitle, datasetName, viewingAreaName, datasetLevel);
         this.geoDataUri = geoDataUri;
         this.geoDataFormat = geoDataFormat;
         this.zDataUri = zDataUri;

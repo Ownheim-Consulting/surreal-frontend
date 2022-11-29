@@ -19,16 +19,12 @@ interface ChartScreenProps {
 function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
     const [charts, setCharts] = useState<Array<Model.Chart>>([]);
 
-    function mapChartResponseToModel(
-        chartResponse: any
-    ): Model.Chart | undefined {
+    function mapChartResponseToModel(chartResponse: any): Model.Chart | undefined {
         switch (chartResponse.type) {
             case "choropleth_map":
                 return Model.ChoroplethMap.mapResponse(chartResponse);
             default:
-                console.error(
-                    "Could not find valid type to map response type to."
-                );
+                console.error("Could not find valid type to map response type to.");
                 return undefined;
         }
     }
@@ -37,9 +33,7 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
         async function getCharts(): Promise<void> {
             let chartsFromApi: Array<Model.Chart> = [];
             for await (const chartSelection of selectedCharts) {
-                let response: Model.Chart | undefined = await ChartApi.getChart(
-                    chartSelection.id
-                );
+                let response: Model.Chart | undefined = await ChartApi.getChart(chartSelection.id);
                 if (response !== undefined) {
                     let chart = mapChartResponseToModel(response!);
                     if (chart && !chartsFromApi.includes(chart)) {
@@ -61,11 +55,7 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
                 renderItem={({ item }) => {
                     return (
                         <View style={styles.listView}>
-                            <Card
-                                id={item.id}
-                                title={item.title}
-                                subtitle={item.subtitle}
-                            >
+                            <Card id={item.id} title={item.title} subtitle={item.subtitle}>
                                 <View style={styles.chartView}>
                                     <InsetShadow>
                                         <Chart type={item.type} obj={item} />
