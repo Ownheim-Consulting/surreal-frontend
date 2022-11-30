@@ -15,38 +15,18 @@ import colors from "../config/colors";
 
 interface HomeScreenProps {
     selectedCharts: Array<ChartSelection>;
+    recentChartSelections: Array<ChartSelection>;
     handleChartSelectionChange: (chartSelection: ChartSelection) => void;
 }
 
-function HomeScreen({ selectedCharts, handleChartSelectionChange }: HomeScreenProps): ReactElement {
-    const [recentChartSelections, setRecentChartSelections] = useState<Array<ChartSelection>>([]);
+function HomeScreen({
+    selectedCharts,
+    recentChartSelections,
+    handleChartSelectionChange,
+}: HomeScreenProps): ReactElement {
+    // const [recentChartSelections, setRecentChartSelections] = useState<Array<ChartSelection>>([]);
     const [recentCharts, setRecentCharts] = useState<Array<ChartModel>>([]);
     const [checked, setChecked] = useState<Array<number>>([]);
-
-    useEffect(() => {
-        // Get recent chart ids from AsyncStorage
-        async function getRecentCharts(): Promise<void> {
-            try {
-                let recentChartSelections: string | null = await AsyncStorage.getItem(
-                    "@recent-charts"
-                );
-                if (recentChartSelections !== null) {
-                    let jsonRecentChartSelections: Array<ChartSelection> =
-                        JSON.parse(recentChartSelections);
-                    // Default all of the selections from AsyncStorage to false
-                    // so that the charts don't start off checked
-                    jsonRecentChartSelections.forEach((selection) => {
-                        selection.selected = false;
-                    });
-                    setRecentChartSelections(jsonRecentChartSelections);
-                }
-            } catch (e) {
-                console.error("Could not retrieve recent charts from store: " + e);
-            }
-        }
-
-        getRecentCharts();
-    }, []);
 
     useEffect(() => {
         // Fetch recent charts from API using recent chart ids

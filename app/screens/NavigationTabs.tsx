@@ -23,7 +23,34 @@ function NavigationTabs({}): ReactElement {
     const [recentCharts, setRecentCharts] = useState<Array<ChartSelection>>([]);
 
     useEffect(() => {
-        async function updateRecentCharts(): Promise<void> {
+        // Get recent chart ids from AsyncStorage on initial app load
+        async function getRecentChartsOnAppLoad(): Promise<void> {
+            try {
+                let recentChartSelections: string | null = await AsyncStorage.getItem(
+                    "@recent-charts"
+                );
+                if (recentChartSelections !== null) {
+                    let jsonRecentChartSelections: Array<ChartSelection> =
+                        JSON.parse(recentChartSelections);
+                    // Default all of the selections from AsyncStorage to false
+                    // so that the charts don't start off checked
+                    jsonRecentChartSelections.forEach((selection) => {
+                        selection.selected = false;
+                    });
+                    setRecentCharts(jsonRecentChartSelections);
+                }
+            } catch (e) {
+                console.error("Could not retrieve recent charts from store: " + e);
+            }
+        }
+
+        getRecentChartsOnAppLoad();
+    }, []);
+
+    useEffect(() => {
+        // Update the stored recent charts value to keep it up to date between app
+        // launches
+        async function updateRecentChartsStore(): Promise<void> {
             try {
                 // Get storedRecentCharts from store and init storedRecentChartsJson
                 // based on if we got anything from store or not
@@ -73,10 +100,22 @@ function NavigationTabs({}): ReactElement {
             }
         }
 
-        updateRecentCharts();
+        updateRecentChartsStore();
     }, [recentCharts]);
 
     function handleChartSelectionsChange(chartSelection: ChartSelection): void {
+        let cpyRecentCharts = [...recentCharts];
+        if (cpyRecentCharts.some((element) => element.id === chartSelection.id)) {
+            cpyRecentCharts = cpyRecentCharts.map((element) =>
+                element.id === chartSelection.id
+                    ? { ...element, selected: chartSelection.selected }
+                    : element
+            );
+        } else {
+            cpyRecentCharts.push(chartSelection);
+        }
+        setRecentCharts(cpyRecentCharts);
+
         let cpyChartSelections = [...chartSelections];
         if (
             !cpyChartSelections.some((element) => element.id === chartSelection.id) &&
@@ -89,18 +128,6 @@ function NavigationTabs({}): ReactElement {
             );
         }
         setChartSelections(cpyChartSelections);
-
-        let cpyRecentCharts = [...recentCharts];
-        if (cpyRecentCharts.some((element) => element.id === chartSelection.id)) {
-            cpyRecentCharts = cpyRecentCharts.map((element) =>
-                element.id === chartSelection.id
-                    ? { ...element, selected: chartSelection.selected }
-                    : element
-            );
-        } else {
-            cpyRecentCharts.push(chartSelection);
-        }
-        setRecentCharts(cpyRecentCharts);
     }
 
     return (
@@ -141,6 +168,7 @@ function NavigationTabs({}): ReactElement {
                         {() => (
                             <HomeScreen
                                 selectedCharts={chartSelections}
+                                recentChartSelections={recentCharts}
                                 handleChartSelectionChange={handleChartSelectionsChange}
                             />
                         )}
