@@ -24,7 +24,6 @@ function HomeScreen({
     recentChartSelections,
     handleChartSelectionChange,
 }: HomeScreenProps): ReactElement {
-    // const [recentChartSelections, setRecentChartSelections] = useState<Array<ChartSelection>>([]);
     const [recentCharts, setRecentCharts] = useState<Array<ChartModel>>([]);
     const [checked, setChecked] = useState<Array<number>>([]);
 
