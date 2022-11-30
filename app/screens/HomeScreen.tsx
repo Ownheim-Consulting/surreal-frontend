@@ -64,11 +64,10 @@ function HomeScreen({
 
     function onCheckboxToggle(id: number): void {
         let cpyChecked = [...checked];
-        let indexOfId = cpyChecked.indexOf(id);
-        if (indexOfId === -1) {
+        if (!cpyChecked.includes(id)) {
             cpyChecked.push(id);
         } else {
-            cpyChecked.splice(indexOfId, 1);
+            cpyChecked.filter((elementId) => elementId !== id);
         }
         setChecked(cpyChecked);
 
