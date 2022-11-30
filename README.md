@@ -17,7 +17,7 @@ Surreal combines NASA airbourne data with Census Bureau economic data to provide
 
 # Dependencies
 
--   NodeJS
+-   NodeJS and NPM
 -   The Expo mobile app on your mobile device
 
 # How to Build and Run the Application
@@ -31,15 +31,15 @@ Surreal combines NASA airbourne data with Census Bureau economic data to provide
 3. Navigate to the project's directory on your local system and run the following
    command to install all dependencies:
 
-```
-npm install
-```
+   ```
+   npm install
+   ```
 
 4. Finally, in order to run the application, execute the following command:
 
-```
-npx expo start
-```
+   ```
+   npm start
+   ```
 
 5. Follow the directions in your terminal to get the project setup and working on your
    mobile device with Expo.
