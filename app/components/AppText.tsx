@@ -5,7 +5,7 @@ import { defaultStyles } from "../config/styles";
 
 interface AppTextProps extends TextProps {
     children: any;
-    style: any;
+    style?: any;
     otherProps?: Array<TextProps>;
 }
 

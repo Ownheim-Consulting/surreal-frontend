@@ -7,8 +7,11 @@ import * as Model from "../models/Chart";
 
 type d3Csv = d3.DSVRowArray<string>;
 
-export function ChoroplethMap(choroplethMapModel: Model.ChoroplethMap) {
+export function ChoroplethMap(choroplethMapModel: Model.ChoroplethMap): ReactElement {
     const [chart, setChart] = useState<ReactElement>();
+    const [data, setData] = useState<any>();
+    const [layout, setLayout] = useState<any>();
+    const [config, setConfig] = useState<any>();
 
     function unpack(rows: d3Csv, key: string) {
         return rows.map(function (row) {
@@ -29,7 +32,7 @@ export function ChoroplethMap(choroplethMapModel: Model.ChoroplethMap) {
 
             let data = [
                 {
-                    type: "choropleth",
+                    type: "choroplethmapbox",
                     geojson: geoData,
                     featureidkey: "id", // The corresponding column in the geojson to the z csv
                     locationmode: "geojson-id",
@@ -39,35 +42,37 @@ export function ChoroplethMap(choroplethMapModel: Model.ChoroplethMap) {
                     hoverinfo: "text+z",
                     colorbar: {
                         thickness: 10,
+                        ticks: "inside",
+                        ticklen: 5,
                     },
                 },
             ];
 
             let layout = {
-                autosize: true,
-                geo: {
-                    scope: "usa",
+                mapbox: {
+                    center: {
+                        lon: -110,
+                        lat: 50,
+                    },
+                    zoom: 0.8,
                 },
                 margin: { b: 0, l: 0, r: 0, t: 0 },
-                dragmode: false,
             };
 
             let config = {
-                displayModeBar: true,
-                scrollZoom: false,
-                modeBarButtonsToRemove: ["toImage", "lasso2d", "select2d"],
-                displaylogo: false,
-                responsive: false,
+                mapboxAccessToken:
+                    "pk.eyJ1Ijoib3duaGVpbS1jb25zdWx0aW5nIiwiYSI6ImNsYjQycmhyazA0amczc2wwejd1dDRpeHIifQ.HlHUZoeEkKZN0EAiRgL44g",
+                displayModeBar: false,
             };
 
-            setChart(<Plotly data={data} layout={layout} config={config} enableFullPlotly debug />);
+            setData(data);
+            setLayout(layout);
+            setConfig(config);
+            setChart(<Plotly data={data} layout={layout} config={config} enableFullPlotly />);
         }
 
-        // Handle initial load of component when chart is undefined
-        if (!chart) {
-            processChart();
-        }
-    }, [chart]);
+        processChart();
+    }, []);
 
     return <View style={styles.chartRow}>{chart}</View>;
 }

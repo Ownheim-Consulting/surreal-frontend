@@ -21,14 +21,14 @@ function ListingsScreen({
     selectedCharts,
     handleChartSelectionChange,
 }: ListingsScreenProps): ReactElement {
-    const [charts, setCharts] = useState<Array<ChartModel>>();
+    const [charts, setCharts] = useState<Array<ChartModel>>([]);
     const [fullCharts, setFullCharts] = useState<Array<ChartModel>>([]);
     const [checked, setChecked] = useState<Array<number>>([]);
     const [search, setSearch] = useState<string>("");
 
     useEffect(() => {
         // Get a list of all of the available charts from the ChartApi
-        async function getCharts(): Promise<void> {
+        async function getChartsOnMount(): Promise<void> {
             let apiCharts: Array<ChartModel> | undefined = await ChartApi.getCharts();
             if (apiCharts === undefined) {
                 console.error("Did not recieve any charts from API");
@@ -43,9 +43,7 @@ function ListingsScreen({
             setFullCharts(apiCharts);
         }
 
-        if (!charts) {
-            getCharts();
-        }
+        getChartsOnMount();
     }, []);
 
     useEffect(() => {
