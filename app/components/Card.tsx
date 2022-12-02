@@ -28,23 +28,21 @@ function Card({ title, subtitle, children }: CardProps) {
 const styles = StyleSheet.create({
     card: {
         flex: 1,
-        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 15,
         backgroundColor: colors.lightGray,
-        marginHorizontal: 20,
-        paddingLeft: 10,
-        paddingRight: 10,
         overflow: "hidden",
-        height: 500,
     },
     subtitle: {
         color: colors.secondary,
         textAlign: "center",
+        marginBottom: 5,
+        marginHorizontal: 15,
     },
     title: {
         marginBottom: 5,
+        marginHorizontal: 15,
         textAlign: "center",
         fontWeight: "bold",
         color: colors.dark,

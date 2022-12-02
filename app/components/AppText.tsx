@@ -9,7 +9,7 @@ interface AppTextProps extends TextProps {
     otherProps?: Array<TextProps>;
 }
 
-function AppText({ children, style, otherProps }: AppTextProps): ReactElement {
+function AppText({ children, style, ...otherProps }: AppTextProps): ReactElement {
     return (
         <Text style={[defaultStyles.text, style]} {...otherProps}>
             {children}

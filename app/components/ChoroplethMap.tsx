@@ -74,12 +74,5 @@ export function ChoroplethMap(choroplethMapModel: Model.ChoroplethMap): ReactEle
         processChart();
     }, []);
 
-    return <View style={styles.chartRow}>{chart}</View>;
+    return <View style={{ flex: 1, width: "100%" }}>{chart}</View>;
 }
-
-const styles = StyleSheet.create({
-    chartRow: {
-        flex: 1,
-        width: "100%",
-    },
-});

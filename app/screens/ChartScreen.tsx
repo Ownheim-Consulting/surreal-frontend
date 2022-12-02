@@ -1,8 +1,9 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React, { ReactElement, useEffect, useMemo, useRef, useState } from "react";
-import { Animated, FlatList, StyleSheet, TouchableHighlight, View } from "react-native";
-import PagerView from "react-native-pager-view";
+import { Animated, Dimensions, StyleSheet, TouchableHighlight, View } from "react-native";
+import { ScalingDot } from "react-native-animated-pagination-dots";
+import PagerView, { PagerViewOnPageScrollEventData } from "react-native-pager-view";
 
-import AppText from "../components/AppText";
 import Card from "../components/Card";
 import { Chart } from "../components/Chart";
 import Screen from "../components/Screen";
@@ -22,7 +23,15 @@ const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
     const [charts, setCharts] = useState<Array<Model.Chart>>([]);
     const [activePage, setActivePage] = useState<number>(0);
-    const ref = useRef<PagerView>();
+    const pagerView = useRef<PagerView>();
+    const scrollOffsetAnimatedValue = React.useRef(new Animated.Value(0)).current;
+    const positionAnimatedValue = React.useRef(new Animated.Value(0)).current;
+    const width = Dimensions.get("window").width;
+    const inputRange = [0, charts.length];
+    const scrollX = Animated.add(scrollOffsetAnimatedValue, positionAnimatedValue).interpolate({
+        inputRange,
+        outputRange: [0, charts.length * width],
+    });
 
     function mapChartResponseToModel(chartResponse: any): Model.Chart | undefined {
         switch (chartResponse.type) {
@@ -33,6 +42,24 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
                 return undefined;
         }
     }
+
+    const onPageScroll = React.useMemo(
+        () =>
+            Animated.event<PagerViewOnPageScrollEventData>(
+                [
+                    {
+                        nativeEvent: {
+                            offset: scrollOffsetAnimatedValue,
+                            position: positionAnimatedValue,
+                        },
+                    },
+                ],
+                {
+                    useNativeDriver: false,
+                }
+            ),
+        []
+    );
 
     useEffect(() => {
         async function getCharts(): Promise<void> {
@@ -55,10 +82,11 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
     return (
         <Screen style={styles.screen}>
             <AnimatedPagerView
-                ref={ref}
+                ref={pagerView}
                 style={styles.pagerView}
                 initialPage={activePage}
                 scrollEnabled={false}
+                onPageScroll={onPageScroll}
             >
                 {useMemo(
                     () =>
@@ -74,30 +102,42 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
                     [charts]
                 )}
             </AnimatedPagerView>
-            <TouchableHighlight
-                onPress={() => {
-                    ref.current?.setPage(activePage - 1);
-                    if (activePage > 0) {
-                        setActivePage(activePage - 1);
-                    }
-                }}
-            >
-                <View>
-                    <AppText>Back</AppText>
+            <View style={styles.buttonView}>
+                <TouchableHighlight
+                    onPress={() => {
+                        pagerView.current?.setPage(activePage - 1);
+                        if (activePage > 0) {
+                            setActivePage(activePage - 1);
+                        }
+                    }}
+                    style={styles.button}
+                >
+                    <MaterialCommunityIcons name="arrow-left-bold" size={30} color={colors.dark} />
+                </TouchableHighlight>
+                <View style={styles.dotsContainer}>
+                    <View style={styles.dotContainer}>
+                        <ScalingDot
+                            data={charts}
+                            //@ts-ignore
+                            scrollX={scrollX}
+                            activeDotColor={colors.black}
+                            inActiveDotColor={colors.black}
+                            //containerStyle={{ alignContent: "center" }}
+                        />
+                    </View>
                 </View>
-            </TouchableHighlight>
-            <TouchableHighlight
-                onPress={() => {
-                    ref.current?.setPage(activePage + 1);
-                    if (activePage < charts.length - 1) {
-                        setActivePage(activePage + 1);
-                    }
-                }}
-            >
-                <View>
-                    <AppText>Forward</AppText>
-                </View>
-            </TouchableHighlight>
+                <TouchableHighlight
+                    onPress={() => {
+                        pagerView.current?.setPage(activePage + 1);
+                        if (activePage < charts.length - 1) {
+                            setActivePage(activePage + 1);
+                        }
+                    }}
+                    style={styles.button}
+                >
+                    <MaterialCommunityIcons name="arrow-right-bold" size={30} color={colors.dark} />
+                </TouchableHighlight>
+            </View>
         </Screen>
     );
 }
@@ -107,7 +147,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
-        paddingTop: 15,
     },
     pagerView: {
         flex: 1,
@@ -115,11 +154,36 @@ const styles = StyleSheet.create({
     chartView: {
         borderRadius: 10,
         overflow: "hidden",
-        width: "100%",
+        width: "90%",
         height: "80%",
     },
     listView: {
-        marginBottom: 15,
+        margin: 15,
+    },
+    buttonView: {
+        flexDirection: "row",
+        height: "10%",
+        justifyContent: "space-between",
+    },
+    button: {
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 10,
+        backgroundColor: colors.light,
+        borderRadius: 50,
+        width: "15%",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    dotContainer: {
+        justifyContent: "center",
+        alignSelf: "center",
+    },
+    dotsContainer: {
+        height: "80%",
+        justifyContent: "center",
+        alignContent: "center",
+        backgroundColor: colors.danger,
     },
 });
 

@@ -39,11 +39,12 @@
     "expo-checkbox": "^2.2.0",
     "react": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-animated-pagination-dots": "^0.1.73",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-inset-shadow": "^1.0.3",
     "react-native-pager-view": "6.0.1",
     "react-native-plotly": "^6.0.0",
-    "react-native-reanimated": "~2.12.0",
+    "react-native-reanimated": "~2.12.0"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.18.6",
