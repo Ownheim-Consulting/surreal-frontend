@@ -21,15 +21,6 @@ export class Chart {
                 return undefined;
         }
     }
-
-    static mapResponse(responseData: any) {
-        return new this(
-            responseData.id,
-            responseData.title,
-            responseData.subtitle,
-            responseData.type
-        );
-    }
 }
 
 export class MapChart extends Chart {

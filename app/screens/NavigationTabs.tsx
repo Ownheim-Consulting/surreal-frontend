@@ -7,11 +7,11 @@ import { StyleSheet } from "react-native";
 
 import Screen from "../components/Screen";
 
-import { ChartSelection } from "../models/ChartSelection";
-
 import ChartScreen from "../screens/ChartScreen";
 import HomeScreen from "../screens/HomeScreen";
 import ListingsScreen from "../screens/ListingsScreen";
+
+import { ChartSelection } from "../models/ChartSelection";
 
 import colors from "../config/colors";
 import { defaultStyles } from "../config/styles";

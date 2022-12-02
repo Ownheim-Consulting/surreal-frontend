@@ -4,7 +4,16 @@
     "singleQuote": false,
     "tabWidth": 4,
     "endOfLine": "lf",
-    "importOrder": [".components/(.*)$", ".models/(.*)$", ".screens/(.*)$", "^[./]"],
+    "importOrder": [
+        ".components/(.*)$",
+        ".screens/(.*)$",
+        ".apis/(.*)$",
+        ".models/(.*)$",
+        ".config/(.*)$",
+        "^[./]"
+    ],
     "importOrderSeparation": true,
-    "importOrderSortSpecifiers": true
+    "importOrderSortSpecifiers": true,
+    "importOrderGroupNamespaceSpecifiers": true,
+    "importOrderCaseInsensitive": true
 }

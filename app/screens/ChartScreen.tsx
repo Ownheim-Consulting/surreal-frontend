@@ -6,10 +6,11 @@ import Card from "../components/Card";
 import { Chart } from "../components/Chart";
 import Screen from "../components/Screen";
 
+import { ChartApi } from "../apis/ChartApi";
+
 import * as Model from "../models/Chart";
 import { ChartSelection } from "../models/ChartSelection";
 
-import { ChartApi } from "../apis/ChartApi";
 import colors from "../config/colors";
 
 interface ChartScreenProps {
