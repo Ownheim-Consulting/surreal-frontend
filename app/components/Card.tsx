@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 
 import colors from "../config/colors";
+
 import AppText from "./AppText";
 
 interface CardProps {
-    id: number;
     title: string;
     subtitle?: string;
     children?: any;
@@ -13,7 +13,7 @@ interface CardProps {
 
 function Card({ title, subtitle, children }: CardProps) {
     return (
-        <View style={styles.card}>
+        <View key={"cardOuterView"} style={styles.card}>
             <AppText style={styles.title} numberOfLines={1} adjustsFontSizeToFit={true}>
                 {title}
             </AppText>

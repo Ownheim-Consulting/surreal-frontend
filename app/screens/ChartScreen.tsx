@@ -1,18 +1,15 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React, { ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactElement, useRef, useState } from "react";
 import { Animated, Dimensions, StyleSheet, TouchableHighlight, View } from "react-native";
 import { ScalingDot } from "react-native-animated-pagination-dots";
 import PagerView, { PagerViewOnPageScrollEventData } from "react-native-pager-view";
 
-import Card from "../components/Card";
-import { Chart } from "../components/Chart";
-import Screen from "../components/Screen";
+import ChartCard from "@app/components/ChartCard";
+import Screen from "@app/components/Screen";
 
-import * as Model from "../models/Chart";
-import { ChartSelection } from "../models/ChartSelection";
+import { ChartSelection } from "@app/models/ChartSelection";
 
-import { ChartApi } from "../apis/ChartApi";
-import colors from "../config/colors";
+import colors from "@app/config/colors";
 
 interface ChartScreenProps {
     selectedCharts: Array<ChartSelection>;
@@ -21,27 +18,18 @@ interface ChartScreenProps {
 const AnimatedPagerView = Animated.createAnimatedComponent(PagerView);
 
 function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
-    const [charts, setCharts] = useState<Array<Model.Chart>>([]);
     const [activePage, setActivePage] = useState<number>(0);
     const pagerView = useRef<PagerView>();
+
+    // Animation state for pager dots
     const scrollOffsetAnimatedValue = React.useRef(new Animated.Value(0)).current;
     const positionAnimatedValue = React.useRef(new Animated.Value(0)).current;
     const width = Dimensions.get("window").width;
-    const inputRange = [0, charts.length];
+    const inputRange = [0, selectedCharts.length];
     const scrollX = Animated.add(scrollOffsetAnimatedValue, positionAnimatedValue).interpolate({
         inputRange,
-        outputRange: [0, charts.length * width],
+        outputRange: [0, selectedCharts.length * width],
     });
-
-    function mapChartResponseToModel(chartResponse: any): Model.Chart | undefined {
-        switch (chartResponse.type) {
-            case "choropleth_map":
-                return Model.ChoroplethMap.mapResponse(chartResponse);
-            default:
-                console.error("Could not find valid type to map response type to.");
-                return undefined;
-        }
-    }
 
     const onPageScroll = React.useMemo(
         () =>
@@ -61,24 +49,6 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
         []
     );
 
-    useEffect(() => {
-        async function getCharts(): Promise<void> {
-            let chartsFromApi: Array<Model.Chart> = [];
-            for await (const chartSelection of selectedCharts) {
-                let response: Model.Chart | undefined = await ChartApi.getChart(chartSelection.id);
-                if (response !== undefined) {
-                    let chart = mapChartResponseToModel(response!);
-                    if (chart && !chartsFromApi.includes(chart)) {
-                        chartsFromApi.push(chart);
-                    }
-                }
-            }
-            setCharts(chartsFromApi);
-        }
-
-        getCharts();
-    }, [selectedCharts]);
-
     return (
         <Screen style={styles.screen}>
             <AnimatedPagerView
@@ -88,19 +58,17 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
                 scrollEnabled={false}
                 onPageScroll={onPageScroll}
             >
-                {useMemo(
-                    () =>
-                        charts.map((item) => (
-                            <View key={item.id} style={styles.listView} collapsable={false}>
-                                <Card id={item.id} title={item.title} subtitle={item.subtitle}>
-                                    <View style={styles.chartView}>
-                                        <Chart type={item.type} obj={item} />
-                                    </View>
-                                </Card>
-                            </View>
-                        )),
-                    [charts]
-                )}
+                {selectedCharts.map((chart, index) => {
+                    return (
+                        <View
+                            key={index + "-animatedPagerViewChartCardOuterView"}
+                            style={styles.chartCardView}
+                            collapsable={false}
+                        >
+                            <ChartCard key={index.toString()} chartId={chart.id} />
+                        </View>
+                    );
+                })}
             </AnimatedPagerView>
             <View style={styles.buttonView}>
                 <TouchableHighlight
@@ -117,19 +85,18 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
                 <View style={styles.dotsContainer}>
                     <View style={styles.dotContainer}>
                         <ScalingDot
-                            data={charts}
+                            data={selectedCharts}
                             //@ts-ignore
                             scrollX={scrollX}
                             activeDotColor={colors.black}
                             inActiveDotColor={colors.black}
-                            //containerStyle={{ alignContent: "center" }}
                         />
                     </View>
                 </View>
                 <TouchableHighlight
                     onPress={() => {
                         pagerView.current?.setPage(activePage + 1);
-                        if (activePage < charts.length - 1) {
+                        if (activePage < selectedCharts.length - 1) {
                             setActivePage(activePage + 1);
                         }
                     }}
@@ -148,17 +115,11 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 15,
         borderTopLeftRadius: 15,
     },
+    chartCardView: {
+        marginBottom: 15,
+    },
     pagerView: {
         flex: 1,
-    },
-    chartView: {
-        borderRadius: 10,
-        overflow: "hidden",
-        width: "90%",
-        height: "80%",
-    },
-    listView: {
-        margin: 15,
     },
     buttonView: {
         flexDirection: "row",
