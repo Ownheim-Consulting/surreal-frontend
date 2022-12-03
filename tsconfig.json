@@ -4,5 +4,12 @@
         {
             "name": "typescript-eslint-language-service"
         }
-    ]
+    ],
+    "compilerOptions": {
+        "strict": true,
+        "baseUrl": "./app",
+        "paths": {
+            "@app/*": ["./*"]
+        }
+    }
 }
