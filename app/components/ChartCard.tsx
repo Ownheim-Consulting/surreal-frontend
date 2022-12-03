@@ -2,14 +2,14 @@ import { ReactElement } from "react";
 import { StyleSheet, View } from "react-native";
 import { useQuery } from "react-query";
 
+import Card from "@app/components/Card";
+import { Chart as ChartComponent } from "@app/components/Chart";
+import ErrorMessage from "@app/components/ErrorMessage";
+import LoadingIndicator from "@app/components/LoadingIndicator";
+
 import { ChartApi } from "@app/apis/ChartApi";
 
 import { Chart as ChartModel, ChoroplethMap as ChoroplethMapModel } from "@app/models/Chart";
-
-import Card from "./Card";
-import { Chart as ChartComponent } from "./Chart";
-import ErrorMessage from "./ErrorMessage";
-import LoadingIndicator from "./LoadingIndicator";
 
 interface ChartCardProps {
     chartId: number;
@@ -20,9 +20,6 @@ function ChartCard({ chartId }: ChartCardProps): ReactElement {
         ["chartCardChart", chartId, mapChartResponseToModel],
         async () => {
             let response = await ChartApi.getChart(chartId);
-            if (!response) {
-                throw new Error(`Could not retrieve chart with chart id: ${chartId}`);
-            }
             let chart = mapChartResponseToModel(response);
             if (!chart) {
                 throw new Error(`Could not map chart type: ${response.type} to valid type`);

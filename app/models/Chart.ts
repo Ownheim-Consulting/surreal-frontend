@@ -6,20 +6,11 @@ export class Chart {
     readonly subtitle: string;
     readonly type: any;
 
-    constructor(id: number, title: string, subtitle: string, type: string) {
+    constructor(id: number, title: string, subtitle: string, type: any) {
         this.id = id;
         this.title = title;
         this.subtitle = subtitle;
-        this.type = this.mapType(type);
-    }
-
-    mapType(type: string): any {
-        switch (type) {
-            case "choropleth_map":
-                return ChoroplethMapComponent;
-            default:
-                return undefined;
-        }
+        this.type = type;
     }
 }
 
@@ -33,7 +24,7 @@ export class MapChart extends Chart {
         id: number,
         title: string,
         subtitle: string,
-        type: string,
+        type: any,
         legendTitle: string,
         datasetName: string,
         viewingAreaName: string,
@@ -67,14 +58,23 @@ export class ChoroplethMap extends MapChart {
         zDataUri: string,
         zDataFormat: string
     ) {
-        super(id, title, subtitle, type, legendTitle, datasetName, viewingAreaName, datasetLevel);
+        super(
+            id,
+            title,
+            subtitle,
+            ChoroplethMapComponent,
+            legendTitle,
+            datasetName,
+            viewingAreaName,
+            datasetLevel
+        );
         this.geoDataUri = geoDataUri;
         this.geoDataFormat = geoDataFormat;
         this.zDataUri = zDataUri;
         this.zDataFormat = zDataFormat;
     }
 
-    static mapResponse(responseData: any) {
+    static mapResponse(responseData: any): ChoroplethMap {
         return new this(
             responseData.id,
             responseData.title,

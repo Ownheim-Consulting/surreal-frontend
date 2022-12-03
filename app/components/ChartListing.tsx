@@ -3,16 +3,15 @@ import React, { ReactElement } from "react";
 import { StyleSheet, View } from "react-native";
 import { useQuery } from "react-query";
 
+import ErrorMessage from "@app/components/ErrorMessage";
 import InfoCard from "@app/components/InfoCard";
+import LoadingIndicator from "@app/components/LoadingIndicator";
 
 import { ChartApi } from "@app/apis/ChartApi";
 
 import { Chart as ChartModel } from "@app/models/Chart";
 
 import colors from "@app/config/colors";
-
-import ErrorMessage from "./ErrorMessage";
-import LoadingIndicator from "./LoadingIndicator";
 
 interface ChartListingProps {
     key: string;
