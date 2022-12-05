@@ -1,11 +1,8 @@
 import React, { ReactElement, useMemo, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
-import { useQuery } from "react-query";
 
 import AppText from "@app/components/AppText";
 import ChartListing from "@app/components/ChartListing";
-import ErrorMessage from "@app/components/ErrorMessage";
-import LoadingIndicator from "@app/components/LoadingIndicator";
 import Screen from "@app/components/Screen";
 
 import { ChartSelection } from "@app/models/ChartSelection";
@@ -49,16 +46,19 @@ function HomeScreen({
     }
 
     return (
-        <Screen style={styles.screen}>
-            <AppText style={styles.text}>Recent Charts</AppText>
+        <Screen key="homeScreenBaseScreen" style={styles.screen}>
+            <AppText id="homeScreenRecentChartsAppText" style={styles.text}>
+                Recent Charts
+            </AppText>
             <FlatList
                 data={recentChartSelections}
                 keyExtractor={(chart) => chart.id.toString()}
                 renderItem={({ item }) => (
                     <ChartListing
+                        id={item.id.toString()}
                         chartId={item.id}
                         checkboxValue={checked.includes(item.id)}
-                        onCheckboxToggle={onCheckboxToggle}
+                        onCheckboxToggle={() => onCheckboxToggle(item.id)}
                     />
                 )}
             />

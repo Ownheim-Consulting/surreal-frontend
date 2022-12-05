@@ -14,14 +14,14 @@ import { Chart as ChartModel } from "@app/models/Chart";
 import colors from "@app/config/colors";
 
 interface ChartListingProps {
-    key: string;
+    id?: string;
     chartId: number;
     checkboxValue: boolean;
-    onCheckboxToggle: (id: number) => void;
+    onCheckboxToggle: (value: boolean) => void | undefined;
 }
 
 function ChartListing({
-    key,
+    id = "",
     chartId,
     checkboxValue,
     onCheckboxToggle,
@@ -40,12 +40,16 @@ function ChartListing({
     }
 
     return (
-        <View key={key + "chartListingView"} style={styles.listView}>
-            <InfoCard key={key} title={data!.title} subtitle={data!.subtitle}>
-                <View key={key + "-chartListingViewCheckboxColumn"} style={styles.checkboxColumn}>
+        <View key={id + "-chartListingView"} style={styles.listingView}>
+            <InfoCard
+                id={id + "-chartListingInfoCard"}
+                title={data!.title}
+                subtitle={data!.subtitle}
+            >
+                <View key={id + "-chartListingViewCheckboxColumn"} style={styles.checkboxColumn}>
                     <Checkbox
                         value={checkboxValue}
-                        onValueChange={() => onCheckboxToggle(data!.id)}
+                        onValueChange={onCheckboxToggle}
                         color={colors.dark}
                     />
                 </View>
@@ -55,7 +59,7 @@ function ChartListing({
 }
 
 const styles = StyleSheet.create({
-    listView: {
+    listingView: {
         marginBottom: 15,
     },
     checkboxColumn: {

@@ -12,10 +12,11 @@ import { ChartApi } from "@app/apis/ChartApi";
 import { Chart as ChartModel, ChoroplethMap as ChoroplethMapModel } from "@app/models/Chart";
 
 interface ChartCardProps {
+    id?: string;
     chartId: number;
 }
 
-function ChartCard({ chartId }: ChartCardProps): ReactElement {
+function ChartCard({ id = "", chartId }: ChartCardProps): ReactElement {
     const { isLoading, error, data } = useQuery<ChartModel, Error>(
         ["chartCardChart", chartId, mapChartResponseToModel],
         async () => {
@@ -46,8 +47,8 @@ function ChartCard({ chartId }: ChartCardProps): ReactElement {
     }
 
     return (
-        <Card key={"chartCardOuterCard"} title={data!.title} subtitle={data!.subtitle}>
-            <View key={"chartCardInnerView"} style={styles.chartView}>
+        <Card key={id + "-chartCardOuterCard"} title={data!.title} subtitle={data!.subtitle}>
+            <View key={id + "-chartCardInnerView"} style={styles.chartView}>
                 <ChartComponent type={data!.type} obj={data!} />
             </View>
         </Card>

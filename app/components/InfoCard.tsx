@@ -6,20 +6,31 @@ import AppText from "../components/AppText";
 import colors from "../config/colors";
 
 interface InfoCardProps {
+    id?: string;
     title: string;
     subtitle?: string;
     children?: any;
     style?: any;
 }
 
-function InfoCard({ title, subtitle, children, style }: InfoCardProps): ReactElement {
+function InfoCard({ id = "", title, subtitle, children, style }: InfoCardProps): ReactElement {
     return (
-        <View key={"infoCardOuterView"} style={[styles.container, style]}>
-            <View key={"infoCardInnerView"} style={[styles.textColumn]}>
-                <AppText style={styles.title} numberOfLines={2} adjustsFontSizeToFit={true}>
+        <View key={id + "-infoCardOuterView"} style={[styles.container, style]}>
+            <View key={id + "-infoCardInnerView"} style={[styles.textColumn]}>
+                <AppText
+                    id={id + "-infoCardTitleAppText"}
+                    style={styles.title}
+                    numberOfLines={2}
+                    adjustsFontSizeToFit={true}
+                >
                     {title}
                 </AppText>
-                <AppText style={styles.subtitle} numberOfLines={2} adjustsFontSizeToFit={true}>
+                <AppText
+                    id={id + "-infoCardSubtitleAppText"}
+                    style={styles.subtitle}
+                    numberOfLines={2}
+                    adjustsFontSizeToFit={true}
+                >
                     {subtitle}
                 </AppText>
             </View>

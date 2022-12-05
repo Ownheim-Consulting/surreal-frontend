@@ -52,49 +52,7 @@ function NavigationTabs({}): ReactElement {
         // launches
         async function updateRecentChartsStore(): Promise<void> {
             try {
-                // Get storedRecentCharts from store and init storedRecentChartsJson
-                // based on if we got anything from store or not
-                let storedRecentCharts: string | null = await AsyncStorage.getItem(
-                    "@recent-charts"
-                );
-                let storedRecentChartsJson: Array<ChartSelection>;
-                if (storedRecentCharts !== null) {
-                    storedRecentChartsJson = JSON.parse(storedRecentCharts);
-                } else {
-                    storedRecentChartsJson = new Array<ChartSelection>();
-                }
-                // Remove duplicates in storedRecentChartsJson
-                storedRecentChartsJson = storedRecentChartsJson.reduce(
-                    (acc: Array<ChartSelection>, cur: ChartSelection) => {
-                        if (!acc.some((element) => element.id === cur.id)) {
-                            acc.push(cur);
-                        }
-                        return acc;
-                    },
-                    []
-                );
-
-                // Add any missing charts in recentCharts to storedRecentChartsJson
-                recentCharts.forEach((chart) => {
-                    if (storedRecentChartsJson.some((element) => element.id === chart.id)) {
-                        storedRecentChartsJson = storedRecentChartsJson.map((element) =>
-                            element.id === chart.id
-                                ? { ...element, selected: chart.selected }
-                                : element
-                        );
-                    } else {
-                        storedRecentChartsJson.push(chart);
-                    }
-                });
-
-                // Only want to have maximum recent chart list length of 7
-                while (storedRecentChartsJson.length > 7) {
-                    storedRecentChartsJson.shift();
-                }
-                await AsyncStorage.setItem(
-                    "@recent-charts",
-                    JSON.stringify(storedRecentChartsJson)
-                );
+                await AsyncStorage.setItem("@recent-charts", JSON.stringify(recentCharts));
             } catch (e) {
                 console.error("Could not set recent charts in store: " + e);
             }
@@ -103,8 +61,9 @@ function NavigationTabs({}): ReactElement {
         updateRecentChartsStore();
     }, [recentCharts]);
 
-    function handleChartSelectionsChange(chartSelection: ChartSelection): void {
+    function updateRecentCharts(chartSelection: ChartSelection): void {
         let cpyRecentCharts = [...recentCharts];
+        // Update if existing entry is present
         if (cpyRecentCharts.some((element) => element.id === chartSelection.id)) {
             cpyRecentCharts = cpyRecentCharts.map((element) =>
                 element.id === chartSelection.id
@@ -112,9 +71,19 @@ function NavigationTabs({}): ReactElement {
                     : element
             );
         } else {
+            // Push new entry if no existing entry
             cpyRecentCharts.push(chartSelection);
         }
+
+        // Only want to have maximum recent chart list length of 6
+        while (cpyRecentCharts.length > 6) {
+            cpyRecentCharts.shift();
+        }
         setRecentCharts(cpyRecentCharts);
+    }
+
+    function handleChartSelectionsChange(chartSelection: ChartSelection): void {
+        updateRecentCharts(chartSelection);
 
         let cpyChartSelections = [...chartSelections];
         if (

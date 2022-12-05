@@ -79,16 +79,17 @@ function ListingsScreen({
     }
 
     if (error) {
-        return <ErrorMessage message={error.message} />;
+        return <ErrorMessage key="listingScreenErrorMessage" message={error.message} />;
     }
 
     if (isLoading) {
-        return <LoadingIndicator />;
+        return <LoadingIndicator key="listingScreenLoadingIndicator" />;
     }
 
     return (
-        <Screen style={styles.screen}>
+        <Screen key="listingScreenBaseScreen" style={styles.screen}>
             <SearchBar
+                key="listingScreenSearchBar"
                 placeholder="Search"
                 platform={"android"}
                 containerStyle={styles.searchBarContainer}
@@ -101,9 +102,10 @@ function ListingsScreen({
                 keyExtractor={(chart) => chart.id.toString()}
                 renderItem={({ item }) => (
                     <ChartListing
+                        id={item.id.toString()}
                         chartId={item.id}
                         checkboxValue={checked.includes(item.id)}
-                        onCheckboxToggle={onCheckboxToggle}
+                        onCheckboxToggle={() => onCheckboxToggle(item.id)}
                     />
                 )}
             />

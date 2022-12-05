@@ -4,14 +4,15 @@ import { Text, TextProps } from "react-native";
 import { defaultStyles } from "../config/styles";
 
 interface AppTextProps extends TextProps {
+    id?: string;
     children: any;
     style?: any;
     otherProps?: Array<TextProps>;
 }
 
-function AppText({ children, style, ...otherProps }: AppTextProps): ReactElement {
+function AppText({ id = "", children, style, ...otherProps }: AppTextProps): ReactElement {
     return (
-        <Text style={[defaultStyles.text, style]} {...otherProps}>
+        <Text key={id + "-appTextText"} style={[defaultStyles.text, style]} {...otherProps}>
             {children}
         </Text>
     );

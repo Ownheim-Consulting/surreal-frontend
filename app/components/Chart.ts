@@ -1,8 +1,8 @@
-import * as Model from "../models/Chart";
+import { Chart as ChartModel } from "../models/Chart";
 
 interface ChartProps {
     type: any;
-    obj: Model.Chart;
+    obj: ChartModel;
 }
 
 export function Chart({ type, obj }: ChartProps) {
