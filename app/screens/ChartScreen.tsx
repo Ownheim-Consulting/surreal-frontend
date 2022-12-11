@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React, { ReactElement, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { Animated, Dimensions, StyleSheet, TouchableHighlight, View } from "react-native";
 import { ScalingDot } from "react-native-animated-pagination-dots";
 import PagerView, { PagerViewOnPageScrollEventData } from "react-native-pager-view";
@@ -7,9 +7,9 @@ import PagerView, { PagerViewOnPageScrollEventData } from "react-native-pager-vi
 import ChartCard from "@app/components/ChartCard";
 import Screen from "@app/components/Screen";
 
-import { ChartSelection } from "@app/models/ChartSelection";
-
 import colors from "@app/config/colors";
+
+import { ChartSelection } from "@app/models/ChartSelection";
 
 interface ChartScreenProps {
     selectedCharts: Array<ChartSelection>;
@@ -30,6 +30,13 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
         inputRange,
         outputRange: [0, selectedCharts.length * width],
     });
+
+    // If selectedCharts list is shrunk below current activePage
+    useEffect(() => {
+        if (activePage > selectedCharts.length - 1) {
+            setActivePage(selectedCharts.length - 1);
+        }
+    }, [selectedCharts]);
 
     const onPageScroll = React.useMemo(
         () =>
@@ -74,9 +81,7 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
                 <TouchableHighlight
                     onPress={() => {
                         pagerView.current?.setPage(activePage - 1);
-                        if (activePage > 0) {
-                            setActivePage(activePage - 1);
-                        }
+                        activePage > 0 ? setActivePage(activePage - 1) : activePage;
                     }}
                     style={styles.button}
                 >
@@ -96,9 +101,9 @@ function ChartScreen({ selectedCharts }: ChartScreenProps): ReactElement {
                 <TouchableHighlight
                     onPress={() => {
                         pagerView.current?.setPage(activePage + 1);
-                        if (activePage < selectedCharts.length - 1) {
-                            setActivePage(activePage + 1);
-                        }
+                        activePage < selectedCharts.length - 1
+                            ? setActivePage(activePage + 1)
+                            : activePage;
                     }}
                     style={styles.button}
                 >

@@ -5,11 +5,12 @@
     "tabWidth": 4,
     "endOfLine": "lf",
     "importOrder": [
-        ".components/(.*)$",
-        ".screens/(.*)$",
         ".apis/(.*)$",
-        ".models/(.*)$",
+        ".components/(.*)$",
         ".config/(.*)$",
+        ".hooks/(.*)$",
+        ".models/(.*)$",
+        ".screens/(.*)$",
         "^[./]"
     ],
     "importOrderSeparation": true,

@@ -1,19 +1,21 @@
 import { SearchBar } from "@rneui/themed";
 import React, { ReactElement, useMemo, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, RefreshControl, StyleSheet } from "react-native";
 import { useQuery } from "react-query";
+
+import { ChartApi } from "@app/apis/ChartApi";
 
 import ChartListing from "@app/components/ChartListing";
 import ErrorMessage from "@app/components/ErrorMessage";
 import LoadingIndicator from "@app/components/LoadingIndicator";
 import Screen from "@app/components/Screen";
 
-import { ChartApi } from "@app/apis/ChartApi";
+import colors from "@app/config/colors";
+
+import { useRefreshByUser } from "@app/hooks/useRefreshByUser";
 
 import { Chart as ChartModel } from "@app/models/Chart";
 import { ChartSelection } from "@app/models/ChartSelection";
-
-import colors from "@app/config/colors";
 
 interface ListingsScreenProps {
     selectedCharts: Array<ChartSelection>;
@@ -27,10 +29,12 @@ function ListingsScreen({
     const [charts, setCharts] = useState<Array<ChartModel>>([]);
     const [checked, setChecked] = useState<Array<number>>([]);
     const [search, setSearch] = useState<string>("");
-    const { isLoading, error, data } = useQuery<Array<ChartModel>, Error>(
+    const { isLoading, error, data, refetch } = useQuery<Array<ChartModel>, Error>(
         "chartListings",
         ChartApi.getCharts
     );
+
+    const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
     // Update the recent charts list with the correct checkbox status
     // even if user checked chart in home screen
@@ -108,6 +112,9 @@ function ListingsScreen({
                         onCheckboxToggle={() => onCheckboxToggle(item.id)}
                     />
                 )}
+                refreshControl={
+                    <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />
+                }
             />
         </Screen>
     );
