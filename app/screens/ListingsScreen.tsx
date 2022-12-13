@@ -33,7 +33,6 @@ function ListingsScreen({
         "chartListings",
         ChartApi.getCharts
     );
-
     const { isRefetchingByUser, refetchByUser } = useRefreshByUser(refetch);
 
     // Update the recent charts list with the correct checkbox status
@@ -83,15 +82,15 @@ function ListingsScreen({
     }
 
     if (error) {
-        return <ErrorMessage key="listingScreenErrorMessage" message={error.message} />;
+        return <ErrorMessage id="listingScreenErrorMessage" message={error.message} />;
     }
 
     if (isLoading) {
-        return <LoadingIndicator key="listingScreenLoadingIndicator" />;
+        return <LoadingIndicator id="listingScreenLoadingIndicator" />;
     }
 
     return (
-        <Screen key="listingScreenBaseScreen" style={styles.screen}>
+        <Screen id="listingScreenBaseScreen" style={styles.screen}>
             <SearchBar
                 key="listingScreenSearchBar"
                 placeholder="Search"
@@ -102,18 +101,23 @@ function ListingsScreen({
                 value={search}
             />
             <FlatList
+                key="listingScreenFlatList"
                 data={charts}
                 keyExtractor={(chart) => chart.id.toString()}
                 renderItem={({ item }) => (
                     <ChartListing
-                        id={item.id.toString()}
+                        id={"listingScreenChartListing-" + item.id.toString()}
                         chartId={item.id}
                         checkboxValue={checked.includes(item.id)}
                         onCheckboxToggle={() => onCheckboxToggle(item.id)}
                     />
                 )}
                 refreshControl={
-                    <RefreshControl refreshing={isRefetchingByUser} onRefresh={refetchByUser} />
+                    <RefreshControl
+                        key="listingScreenRefreshControl"
+                        refreshing={isRefetchingByUser}
+                        onRefresh={refetchByUser}
+                    />
                 }
             />
         </Screen>

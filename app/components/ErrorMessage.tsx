@@ -4,13 +4,14 @@ import { StyleSheet, View } from "react-native";
 import AppText from "@app/components/AppText";
 
 type ErrorMessageProps = {
+    id?: string;
     message: string;
 };
 
-function ErrorMessage({ message }: ErrorMessageProps) {
+function ErrorMessage({ id = "", message }: ErrorMessageProps) {
     return (
-        <View style={styles.fill}>
-            <AppText>{message}</AppText>
+        <View key={id + "-errorMessageView"} style={styles.fill}>
+            <AppText id={id + "-errorMessageAppText"}>{message}</AppText>
         </View>
     );
 }

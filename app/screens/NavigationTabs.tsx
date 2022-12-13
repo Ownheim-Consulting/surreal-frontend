@@ -5,16 +5,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import React, { ReactElement, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 
-import Screen from "../components/Screen";
+import Screen from "@app/components/Screen";
 
-import ChartScreen from "../screens/ChartScreen";
-import HomeScreen from "../screens/HomeScreen";
-import ListingsScreen from "../screens/ListingsScreen";
+import colors from "@app/config/colors";
+import { defaultStyles } from "@app/config/styles";
 
-import { ChartSelection } from "../models/ChartSelection";
+import { ChartSelection } from "@app/models/ChartSelection";
 
-import colors from "../config/colors";
-import { defaultStyles } from "../config/styles";
+import ChartScreen from "@app/screens/ChartScreen";
+import HomeScreen from "@app/screens/HomeScreen";
+import ListingsScreen from "@app/screens/ListingsScreen";
 
 const Tab = createBottomTabNavigator();
 

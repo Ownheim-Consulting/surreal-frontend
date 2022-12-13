@@ -2,12 +2,12 @@ import { ReactElement } from "react";
 import { StyleSheet, View } from "react-native";
 import { useQuery } from "react-query";
 
+import { ChartApi } from "@app/apis/ChartApi";
+
 import Card from "@app/components/Card";
 import { Chart as ChartComponent } from "@app/components/Chart";
 import ErrorMessage from "@app/components/ErrorMessage";
 import LoadingIndicator from "@app/components/LoadingIndicator";
-
-import { ChartApi } from "@app/apis/ChartApi";
 
 import { Chart as ChartModel, ChoroplethMap as ChoroplethMapModel } from "@app/models/Chart";
 
@@ -20,8 +20,8 @@ function ChartCard({ id = "", chartId }: ChartCardProps): ReactElement {
     const { isLoading, error, data } = useQuery<ChartModel, Error>(
         ["chartCardChart", chartId, mapChartResponseToModel],
         async () => {
-            let response = await ChartApi.getChart(chartId);
-            let chart = mapChartResponseToModel(response);
+            let response: ChartModel = await ChartApi.getChart(chartId);
+            let chart: ChartModel | undefined = mapChartResponseToModel(response);
             if (!chart) {
                 throw new Error(`Could not map chart type: ${response.type} to valid type`);
             }
@@ -39,11 +39,11 @@ function ChartCard({ id = "", chartId }: ChartCardProps): ReactElement {
     }
 
     if (error) {
-        return <ErrorMessage message={error.message} />;
+        return <ErrorMessage id={"chartChartErrorMessage"} message={error.message} />;
     }
 
     if (isLoading) {
-        return <LoadingIndicator />;
+        return <LoadingIndicator id={"chartCardLoadingIndicator"} />;
     }
 
     return (

@@ -1,12 +1,20 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 import colors from "@app/config/colors";
 
-function LoadingIndicator() {
+interface LoadingIndicatorProps {
+    id?: string;
+}
+
+function LoadingIndicator({ id = "" }: LoadingIndicatorProps): ReactElement {
     return (
-        <View style={styles.fill}>
-            <ActivityIndicator size="large" color={colors.white} />
+        <View key={id + "-loadingIndicatorView"} style={styles.fill}>
+            <ActivityIndicator
+                key={id + "-loadingIndicatorActivityIndicator"}
+                size="large"
+                color={colors.white}
+            />
         </View>
     );
 }
