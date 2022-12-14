@@ -1,32 +1,45 @@
 {
-    "expo": {
-        "name": "Surreal",
-        "slug": "Surreal",
-        "version": "0.3.0",
-        "privacy": "unlisted",
-        "orientation": "portrait",
-        "icon": "./app/assets/surreal2.png",
-        "userInterfaceStyle": "light",
-        "splash": {
-            "image": "./app/assets/surreal2.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
-        },
-        "updates": {
-            "fallbackToCacheTimeout": 0
-        },
-        "assetBundlePatterns": ["**/*"],
-        "ios": {
-            "supportsTablet": true
-        },
-        "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./app/assets/surreal2.png",
-                "backgroundColor": "#FFFFFF"
-            }
-        },
-        "web": {
-            "favicon": "./assets/favicon.png"
-        }
+  "expo": {
+    "name": "Surreal",
+    "slug": "Surreal",
+    "version": "0.3.0",
+    "privacy": "unlisted",
+    "orientation": "portrait",
+    "icon": "./app/assets/surreal2.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./app/assets/surreal2.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/fb331012-7bb1-411c-8121-02fc4e3c5962"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ownheim.Surreal"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./app/assets/surreal2.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.ownheim.Surreal"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fb331012-7bb1-411c-8121-02fc4e3c5962"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
+  }
 }
